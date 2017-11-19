@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -241,6 +243,8 @@ public class Inscriptions implements Serializable
 	
 	public static void main(String[] args)
 	{
+		Calendar c = Calendar.getInstance ();
+		Date Date = c.getTime ();
 		Inscriptions inscriptions = Inscriptions.getInscriptions();
 		Competition flechettes = inscriptions.createCompetition("Mondial de fléchettes", null, false);
 		Personne tony = inscriptions.createPersonne("Tony", "Dent de plomb", "azerty"), 

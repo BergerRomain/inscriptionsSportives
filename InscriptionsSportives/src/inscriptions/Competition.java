@@ -1,7 +1,9 @@
 package inscriptions;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
@@ -20,6 +22,9 @@ public class Competition implements Comparable<Competition>, Serializable
 	private Set<Candidat> candidats;
 	private LocalDate dateCloture;
 	private boolean enEquipe = false;
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	Date d = new Date();
+	private LocalDate dateSysteme;
 
 	Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
 	{
@@ -55,10 +60,14 @@ public class Competition implements Comparable<Competition>, Serializable
 	 * @return
 	 */
 	
+	
 	public boolean inscriptionsOuvertes()
 	{
 		// TODO retourner vrai si et seulement si la date système est antérieure à la date de clôture.
-		return true;
+		if(dateSysteme.isBefore(dateCloture))
+			return true;
+		else
+			return false;
 	}
 	
 	/**
@@ -90,7 +99,12 @@ public class Competition implements Comparable<Competition>, Serializable
 	public void setDateCloture(LocalDate dateCloture)
 	{
 		// TODO vérifier que l'on avance pas la date.
-		this.dateCloture = dateCloture;
+		if(dateCloture.isBefore(dateSysteme))
+		{
+			System.out.println("On ne peux pas avancer la date de cloture");
+		}
+		else
+			this.dateCloture = dateCloture;
 	}
 	
 	/**
@@ -114,10 +128,12 @@ public class Competition implements Comparable<Competition>, Serializable
 	public boolean add(Personne personne)
 	{
 		// TODO vérifier que la date de clôture n'est pas passée
-		if (enEquipe)
-			throw new RuntimeException();
-		personne.add(this);
-		return candidats.add(personne);
+		dateSysteme.isBefore(dateCloture);
+		if(true)
+			if (enEquipe)
+				throw new RuntimeException();
+			personne.add(this);
+			return candidats.add(personne);
 	}
 
 	/**
@@ -131,10 +147,12 @@ public class Competition implements Comparable<Competition>, Serializable
 	public boolean add(Equipe equipe)
 	{
 		// TODO vérifier que la date de clôture n'est pas passée
-		if (!enEquipe)
-			throw new RuntimeException();
-		equipe.add(this);
-		return candidats.add(equipe);
+		dateSysteme.isBefore(dateCloture);
+		if(true)
+			if (!enEquipe)
+				throw new RuntimeException();
+			equipe.add(this);
+			return candidats.add(equipe);
 	}
 
 	/**
