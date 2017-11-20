@@ -66,7 +66,11 @@ public class PersonneTest {
 
     @Test
     public void testGetEquipes() {
-    	fail("Not yet implemented");
+    	Equipe lesmanouches = inscriptions.createEquipe("Les Manouches");
+    	Personne tony = inscriptions.createPersonne("Tony", "Dent de plomb", "azerty");
+    	lesmanouches.add(tony);
+    	
+    	assertEquals("getEquipes : " + lesmanouches + " ont pour membres : " + tony, lesmanouches);
     }
 
     @Test
