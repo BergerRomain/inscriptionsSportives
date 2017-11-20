@@ -1,9 +1,14 @@
-package inscriptions;
+package TestJunit;
 
 import static org.junit.Assert.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import org.junit.Test;
+
+import inscriptions.Competition;
+import inscriptions.Equipe;
+import inscriptions.Inscriptions;
+import inscriptions.Personne;
 
 public class PersonneTest {
 
@@ -84,7 +89,7 @@ public class PersonneTest {
 
     @Test
     public void testGetEquipes() {
- 
+    	
     }
 
     @Test
