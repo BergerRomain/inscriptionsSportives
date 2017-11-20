@@ -23,36 +23,21 @@ public class PersonneTest {
     Equipe lesmanouches = inscriptions.createEquipe("Les Manouches");
 
     @Test
-    public void testToString() {
-        String nom = tony.getNom();
-        String nomEquipe = lesmanouches.getNom();
-
-        assertEquals(nom, "Tony");
-        assertEquals(nomEquipe, "Les Manouches");
-
-        System.out.println("toString : " + nom + " membre de " + nomEquipe);
-    }
-
-    @Test
     public void testPersonne() {
         String nom = tony.getNom();
         String prenom = tony.getPrenom();
         String mail = tony.getMail();
 
-        assertEquals(nom, "Tony");
-        assertEquals(prenom, "Dent de plomb");
-        assertEquals(mail, "azerty");
-
-        System.out.println("Personne : " + nom + " , " + prenom + " , " + mail);
+        assertEquals("Personne : " + nom, nom, "Tony");
+        assertEquals(prenom, prenom, "Dent de plomb");
+        assertEquals(mail, mail, "azerty");
     }
 
     @Test
     public void testGetPrenom() {
         String prenom = tony.getPrenom();
 
-        assertEquals(prenom, "Dent de plomb");
-
-        System.out.println("Get : " + prenom + " , Dent de plomb");
+        assertEquals("Get : " + prenom + " , Dent de plomb", prenom, "Dent de plomb");
     }
 @Test
     public void testSetPrenom() {
@@ -60,20 +45,14 @@ public class PersonneTest {
 
         Personne tony = inscriptions.createPersonne("tony", prenom, "azerty");
 
-        assertEquals(tony.getPrenom(), prenom);
-
-        System.out.println("Set : " + prenom + " , " + tony.getPrenom());
-
-
+        assertEquals("Set : " + prenom + " , " + tony.getPrenom(), tony.getPrenom(), prenom);
     }
 
     @Test
     public void testGetMail() {
         String mail = tony.getMail();
 
-        assertEquals(mail, "azerty");
-
-        System.out.println("GetMail : " + mail + " , " + tony.getMail());
+        assertEquals("GetMail : " + mail + " , " + tony.getMail(), mail, "azerty");
     }
 
     @Test
@@ -82,14 +61,12 @@ public class PersonneTest {
 
         Personne tony = inscriptions.createPersonne("tony", "Dent de cuivre", mail);
 
-        assertEquals(tony.getMail(), mail);
-
-        System.out.println("SetMail : " + mail + " , " + tony.getMail());
+        assertEquals("SetMail : " + mail + " , " + tony.getMail(), tony.getMail(), mail);
     }
 
     @Test
     public void testGetEquipes() {
-    	
+    	fail("Not yet implemented");
     }
 
     @Test
