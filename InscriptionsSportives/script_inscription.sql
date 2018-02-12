@@ -14,6 +14,7 @@ drop table etre_inscrit;
 
 CREATE TABLE candidat(
         numCandidat int (11) Auto_increment  NOT NULL ,
+        nomCandidat Varchar (25),
         PRIMARY KEY (numCandidat )
 )ENGINE=InnoDB;
 
@@ -23,10 +24,9 @@ CREATE TABLE candidat(
 #------------------------------------------------------------
 
 CREATE TABLE personne(
-        nomPersonne          Varchar (25) ,
+	    numCandidat          Int NOT NULL ,
         prenomPersonne       Varchar (25) ,
-        numCandidat          Int NOT NULL ,
-        numCandidat_candidat Int ,
+        mail 				 Varchar (50),
         PRIMARY KEY (numCandidat )
 )ENGINE=InnoDB;
 
@@ -39,6 +39,7 @@ CREATE TABLE Competition(
         numCompetition int (11) Auto_increment  NOT NULL ,
         nomCompetition Varchar (25) ,
         dateCloture    Date ,
+        enEquipe	   Varchar(3),
         PRIMARY KEY (numCompetition )
 )ENGINE=InnoDB;
 
@@ -48,7 +49,6 @@ CREATE TABLE Competition(
 #------------------------------------------------------------
 
 CREATE TABLE equipe(
-        nomEquipe   Varchar (25) ,
         numCandidat Int NOT NULL ,
         PRIMARY KEY (numCandidat )
 )ENGINE=InnoDB;
@@ -65,7 +65,6 @@ CREATE TABLE etre_inscrit(
 )ENGINE=InnoDB;
 
 ALTER TABLE personne ADD CONSTRAINT FK_personne_numCandidat FOREIGN KEY (numCandidat) REFERENCES candidat(numCandidat);
-ALTER TABLE personne ADD CONSTRAINT FK_personne_numCandidat_candidat FOREIGN KEY (numCandidat_candidat) REFERENCES candidat(numCandidat);
 ALTER TABLE equipe ADD CONSTRAINT FK_equipe_numCandidat FOREIGN KEY (numCandidat) REFERENCES candidat(numCandidat);
 ALTER TABLE etre_inscrit ADD CONSTRAINT FK_etre_inscrit_numCandidat FOREIGN KEY (numCandidat) REFERENCES candidat(numCandidat);
 ALTER TABLE etre_inscrit ADD CONSTRAINT FK_etre_inscrit_numCompetition FOREIGN KEY (numCompetition) REFERENCES Competition(numCompetition);
