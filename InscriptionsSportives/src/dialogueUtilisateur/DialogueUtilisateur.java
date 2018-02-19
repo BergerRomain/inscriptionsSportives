@@ -2,58 +2,63 @@ package dialogueUtilisateur;
 
 import commandLineMenus.*;
 
-class DialogueUtilisateur 
+public class DialogueUtilisateur 
 {
-	public void candidat()
+	public void start()
 	{
-		
+		inscriptionMenu().start();
+	}
+	
+	private Menu inscriptionMenu()
+	{
+		Menu inscriptionMenu = new Menu("Inscription sportive");
+		inscriptionMenu.add(Inscription());
+		inscriptionMenu.addQuit("2");
+		return inscriptionMenu;
+	}
+	
+	private Menu Inscription()
+	{
+		Menu Inscription = new Menu("Inscription", "1");
+		Inscription.add(competition());
+		Inscription.add(candidat());
+		Inscription.addBack("3");
+		return Inscription;
+	}
+	
+	private Menu competition()
+	{
+		Menu competition = new Menu("Creer une competition", "1");
+		competition.addBack("2");
+		return competition;
+	}
+	
+	private Menu candidat()
+	{
+		Menu candidat = new Menu("Inscription d'un candidat", "2");
+		candidat.add(menuEquipe());
+		candidat.add(menuPersonne());
+		candidat.addBack("3");
+		return candidat;
+	}
+	
+	private Menu menuEquipe()
+	{
+		Menu equipe = new Menu("Inscription d'une equipe", "1");
+		equipe.addBack("1");
+		return equipe;
+	}
+	
+	private Menu menuPersonne()
+	{
+		Menu Personne = new Menu("Inscription d'une personne", "2");
+		Personne.addBack("1");
+		return Personne;
 	}
 	
 	public static void main(String[] args)
 	{
-		Menu inscriptionMenu = new Menu("Inscription sportive");
-		Menu Inscription = new Menu("Inscription", "1");
-		inscriptionMenu.add(Inscription);
-		inscriptionMenu.addQuit("2");
-		Menu candidat = new Menu("Inscription d'un candidat");
-		Inscription.add(candidat);
-		Inscription.add(
-				new Option("Creer une competition", "1", new Action()
-				{
-					public void optionSelected()
-					{
-						System.out.println("competition");
-					}
-				}));
-		
-		Inscription.add(
-				new Option("Inscrire un candidat", "2", new Action()
-				{
-					public void optionSelected()
-					{
-						candidat.add(
-								new Option("Inscrire une equipe", "1", new Action()
-								{
-									public void optionSelected()
-									{
-										System.out.println("equipe");
-									}
-								}));
-						
-						candidat.add(
-								new Option("Inscrire une personne", "2", new Action()
-								{
-									public void optionSelected()
-									{
-										System.out.println("personne");
-									}
-								}));
-
-						candidat.addBack("3");
-					}
-				}));
-		
-		Inscription.addBack("3");
-		inscriptionMenu.start();
+		DialogueUtilisateur console = new DialogueUtilisateur();
+		console.start();
 	}
 }
