@@ -74,7 +74,7 @@ public class DialogueUtilisateur
 		Menu menuCompetition = new Menu("Gerer les competitions", "1");
 		menuCompetition.add(afficherCompetition());
 		//menuCompetition.add(ajouterCompetition());
-		//menuCompetition.add(selectionnerCompetition());
+		menuCompetition.add(selectionnerCompetition());
 		menuCompetition.addBack("4");
 		return menuCompetition;
 	}
@@ -84,6 +84,87 @@ public class DialogueUtilisateur
 		return new Option("Afficher les competitions", "1", () -> {System.out.println(inscriptions.getCompetitions());});
 	}
 	
+	/*private Option ajouterCompetition()
+	{
+		return new Option("Ajouter une competition", "2", () -> inscriptions.createCompetition(getString("Nom : "), getLocalDate("Date : "), getOuiNon("En equipe (oui/non) ? ")));
+	}*/
+	
+	private List<Competition> selectionnerCompetition()
+	{
+		return new List<Competition>("Selectionner une Competition", "3", 
+				() -> new ArrayList<>(inscriptions.getCompetitions()),
+				(element) -> editerCompetition(element)
+				);
+	}
+	
+	private Menu editerCompetition(Competition competition)
+	{
+		Menu menu = new Menu("Editer " + competition.getNom());
+		menu.add(afficher(competition));
+		menu.add(modifierNom(competition));
+		//menu.add(modifierDateCloture(competition));
+		//menu.add(modifierEnEquipe(competition));
+		menu.add(supprimer(competition));
+		menu.add(afficherCandidat(competition));
+		menu.add(ajouterEquipe(competition));
+		menu.add(ajouterPersonne(competition));
+		menu.add(supprimerCandidat(competition));
+		menu.addBack("10");
+		return menu;
+	}
+	
+	private Option afficher(Competition competition)
+	{
+		return new Option("Afficher la competition", "1", 
+				() -> 
+				{
+					System.out.println("Nom : " + competition.getNom());
+					System.out.println("Date de cloture : " + competition.getDateCloture());
+					System.out.println("en equipe : : " + competition.estEnEquipe());
+				}
+		);
+	}
+	
+	private Option modifierNom(Competition competition)
+	{
+		return new Option("Modifier le nom", "2", 
+				() -> {competition.setNom(getString("Nouveau nom : "));});
+	}
+	
+	private Option supprimer(Competition competition)
+	{
+		return new Option("Supprimer", "5", () -> {competition.delete();});
+	}
+	
+	private Option afficherCandidat(Competition competition)
+	{
+		return new Option("Afficher les candidats", "6", () -> {System.out.println(competition.getCandidats());});
+	}
+	
+	private List<Equipe> ajouterEquipe(final Competition competition)
+	{
+		return new List<>("Ajouter un membre", "7", 
+				() -> new ArrayList<>(inscriptions.getEquipes()),
+				(index, element) -> {competition.add(element);}
+				);
+	}
+	
+	private List<Personne> ajouterPersonne(final Competition competition)
+	{
+		return new List<>("Ajouter un membre", "8", 
+				() -> new ArrayList<>(inscriptions.getPersonnes()),
+				(index, element) -> {competition.add(element);}
+				);
+	}
+	
+	private List<Candidat> supprimerCandidat(final Competition competition)
+	{
+		return new List<>("Supprimer un membre", "9", 
+				() -> new ArrayList<>(inscriptions.getCandidats()),
+				(index, element) -> {competition.remove(element);}
+				);
+	}
+
 	private Menu candidat()
 	{
 		Menu candidat = new Menu("Gerer les candidats", "2");
@@ -130,6 +211,7 @@ public class DialogueUtilisateur
 		menu.add(afficherMembre(equipe));
 		menu.add(ajouterMembre(equipe));
 		menu.add(supprimerMembre(equipe));
+		//menu.add(afficherCompetition(equipe));
 		menu.addBack("7");
 		return menu;
 	}
@@ -213,7 +295,10 @@ public class DialogueUtilisateur
 		menu.add(modifierMail(personne));
 		menu.add(supprimer(personne));
 		menu.add(afficherEquipe(personne));
-		menu.addBack("7");
+		menu.add(ajouterEquipe(personne));
+		menu.add(supprimerEquipe(personne));
+		//menu.add(afficherCompetition(personne));
+		menu.addBack("10");
 		return menu;
 	}
 	
@@ -254,7 +339,23 @@ public class DialogueUtilisateur
 	
 	private Option afficherEquipe(Personne personne)
 	{
-		return new Option("Afficher les equipe", "6", () -> {System.out.println(personne.getEquipes());});
+		return new Option("Afficher les equipes", "6", () -> {System.out.println(personne.getEquipes());});
+	}
+	
+	private List<Equipe> ajouterEquipe(final Personne personne)
+	{
+		return new List<>("Ajouter une equipe", "7", 
+				() -> new ArrayList<>(inscriptions.getEquipes()),
+				(index, element) -> {personne.add(element);}
+				);
+	}
+	
+	private List<Equipe> supprimerEquipe(final Personne personne)
+	{
+		return new List<>("Supprimer une quipe", "8", 
+				() -> new ArrayList<>(inscriptions.getEquipes()),
+				(index, element) -> {personne.remove(element);}
+				);
 	}
 	
 	public static void main(String[] args)

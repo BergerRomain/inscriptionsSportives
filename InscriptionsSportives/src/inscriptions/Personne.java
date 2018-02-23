@@ -72,12 +72,12 @@ public class Personne extends Candidat
 		return Collections.unmodifiableSet(equipes);
 	}
 	
-	boolean add(Equipe equipe)
+	public boolean add(Equipe equipe)
 	{
 		return equipes.add(equipe);
 	}
 
-	boolean remove(Equipe equipe)
+	public boolean remove(Equipe equipe)
 	{
 		return equipes.remove(equipe);
 	}
