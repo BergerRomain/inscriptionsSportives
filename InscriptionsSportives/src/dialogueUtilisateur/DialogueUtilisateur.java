@@ -159,10 +159,9 @@ public class DialogueUtilisateur
 		menu.add(modifierDateCloture(competition));
 		menu.add(supprimer(competition));
 		menu.add(afficherCandidat(competition));
-		menu.add(ajouterEquipe(competition));
-		menu.add(ajouterPersonne(competition));
+		menu.add(ajouterCandidat(competition));
 		menu.add(supprimerCandidat(competition));
-		menu.addBack("9");
+		menu.addBack("8");
 		return menu;
 	}
 	
@@ -200,6 +199,15 @@ public class DialogueUtilisateur
 		return new Option("Afficher les candidats", "5", () -> {System.out.println(competition.getCandidats());});
 	}
 	
+	private Option ajouterCandidat(final Competition competition)
+	{	
+		if(competition.estEnEquipe() == true)
+			return ajouterEquipe(competition);
+		else if(competition.estEnEquipe() == false)
+			return ajouterPersonne(competition);
+		return null;
+	}
+	
 	private List<Equipe> ajouterEquipe(final Competition competition)
 	{
 		return new List<>("Ajouter une equipe", "6", 
@@ -210,7 +218,7 @@ public class DialogueUtilisateur
 	
 	private List<Personne> ajouterPersonne(final Competition competition)
 	{
-		return new List<>("Ajouter une personne", "7", 
+		return new List<>("Ajouter une personne", "6", 
 				() -> new ArrayList<>(inscriptions.getPersonnes()),
 				(index, element) -> {competition.add(element);}
 				);
@@ -218,7 +226,7 @@ public class DialogueUtilisateur
 	
 	private List<Candidat> supprimerCandidat(final Competition competition)
 	{
-		return new List<>("Supprimer un membre", "8", 
+		return new List<>("Supprimer un membre", "7", 
 				() -> new ArrayList<>(inscriptions.getCandidats()),
 				(index, element) -> {competition.remove(element);}
 				);
@@ -319,7 +327,7 @@ public class DialogueUtilisateur
 	
 	private Option afficherCompetition(Equipe equipe)
 	{
-		return new Option("Afficher les equipes", "9", () -> {System.out.println(equipe.getCompetitions());});
+		return new Option("Afficher les competitions", "7", () -> {System.out.println(equipe.getCompetitions());});
 	}
 	
 	
@@ -425,7 +433,7 @@ public class DialogueUtilisateur
 	
 	private Option afficherCompetition(Personne personne)
 	{
-		return new Option("Afficher les equipes", "9", () -> {System.out.println(personne.getCompetitions());});
+		return new Option("Afficher les competitions", "9", () -> {System.out.println(personne.getCompetitions());});
 	}
 	
 	public static void main(String[] args)
