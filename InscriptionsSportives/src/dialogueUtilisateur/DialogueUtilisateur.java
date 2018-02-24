@@ -1,6 +1,8 @@
 package dialogueUtilisateur;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import commandLineMenus.*;
@@ -73,10 +75,62 @@ public class DialogueUtilisateur
 	{
 		Menu menuCompetition = new Menu("Gerer les competitions", "1");
 		menuCompetition.add(afficherCompetition());
-		//menuCompetition.add(ajouterCompetition());
+		menuCompetition.add(ajouterCompetition());
 		menuCompetition.add(selectionnerCompetition());
 		menuCompetition.addBack("4");
 		return menuCompetition;
+	}
+	
+	private static LocalDate getLocalDate() throws IOException
+	{
+		final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        final LocalDate localDate = LocalDate.parse(getString(), DATE_FORMAT);
+		return localDate;
+	}
+	
+	public static LocalDate getLocalDate(String message)
+	{
+		do
+		{
+			System.out.print(message);
+			try
+			{
+				return getLocalDate();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Erreur de saisie !");
+			}
+		}
+		while(true);
+	}
+	
+	public static Object getBoolean() throws IOException
+	{
+		final String bool = getString();
+		
+		if(bool.equals("oui"))
+			return true;
+		else if(bool.equals("non"))
+			return false;
+		return bool;
+	}
+	
+	public static boolean getBoolean(String message)
+	{
+		do
+		{
+			System.out.print(message);
+			try
+			{			
+				return (boolean)getBoolean();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Veuillez saisir 'oui' ou 'non'!");
+			}
+		}
+		while(true);
 	}
 	
 	private Option afficherCompetition()
@@ -84,10 +138,10 @@ public class DialogueUtilisateur
 		return new Option("Afficher les competitions", "1", () -> {System.out.println(inscriptions.getCompetitions());});
 	}
 	
-	/*private Option ajouterCompetition()
+	private Option ajouterCompetition()
 	{
-		return new Option("Ajouter une competition", "2", () -> inscriptions.createCompetition(getString("Nom : "), getLocalDate("Date : "), getOuiNon("En equipe (oui/non) ? ")));
-	}*/
+		return new Option("Ajouter une competition", "2", () -> inscriptions.createCompetition(getString("Nom : "), getLocalDate("Date : "), (boolean)getBoolean("En equipe (oui/non) ? ")));
+	}
 	
 	private List<Competition> selectionnerCompetition()
 	{
@@ -102,14 +156,13 @@ public class DialogueUtilisateur
 		Menu menu = new Menu("Editer " + competition.getNom());
 		menu.add(afficher(competition));
 		menu.add(modifierNom(competition));
-		//menu.add(modifierDateCloture(competition));
-		//menu.add(modifierEnEquipe(competition));
+		menu.add(modifierDateCloture(competition));
 		menu.add(supprimer(competition));
 		menu.add(afficherCandidat(competition));
 		menu.add(ajouterEquipe(competition));
 		menu.add(ajouterPersonne(competition));
 		menu.add(supprimerCandidat(competition));
-		menu.addBack("10");
+		menu.addBack("9");
 		return menu;
 	}
 	
@@ -131,19 +184,25 @@ public class DialogueUtilisateur
 				() -> {competition.setNom(getString("Nouveau nom : "));});
 	}
 	
+	private Option modifierDateCloture(Competition competition)
+	{
+		return new Option("Modifier la date de cloture", "3", 
+				() -> {competition.setDateCloture(getLocalDate("Nouvelle date de cloture : "));});
+	}
+	
 	private Option supprimer(Competition competition)
 	{
-		return new Option("Supprimer", "5", () -> {competition.delete();});
+		return new Option("Supprimer", "4", () -> {competition.delete();});
 	}
 	
 	private Option afficherCandidat(Competition competition)
 	{
-		return new Option("Afficher les candidats", "6", () -> {System.out.println(competition.getCandidats());});
+		return new Option("Afficher les candidats", "5", () -> {System.out.println(competition.getCandidats());});
 	}
 	
 	private List<Equipe> ajouterEquipe(final Competition competition)
 	{
-		return new List<>("Ajouter un membre", "7", 
+		return new List<>("Ajouter une equipe", "6", 
 				() -> new ArrayList<>(inscriptions.getEquipes()),
 				(index, element) -> {competition.add(element);}
 				);
@@ -151,7 +210,7 @@ public class DialogueUtilisateur
 	
 	private List<Personne> ajouterPersonne(final Competition competition)
 	{
-		return new List<>("Ajouter un membre", "8", 
+		return new List<>("Ajouter une personne", "7", 
 				() -> new ArrayList<>(inscriptions.getPersonnes()),
 				(index, element) -> {competition.add(element);}
 				);
@@ -159,7 +218,7 @@ public class DialogueUtilisateur
 	
 	private List<Candidat> supprimerCandidat(final Competition competition)
 	{
-		return new List<>("Supprimer un membre", "9", 
+		return new List<>("Supprimer un membre", "8", 
 				() -> new ArrayList<>(inscriptions.getCandidats()),
 				(index, element) -> {competition.remove(element);}
 				);
@@ -211,8 +270,8 @@ public class DialogueUtilisateur
 		menu.add(afficherMembre(equipe));
 		menu.add(ajouterMembre(equipe));
 		menu.add(supprimerMembre(equipe));
-		//menu.add(afficherCompetition(equipe));
-		menu.addBack("7");
+		menu.add(afficherCompetition(equipe));
+		menu.addBack("8");
 		return menu;
 	}
 	
@@ -258,6 +317,12 @@ public class DialogueUtilisateur
 				);
 	}
 	
+	private Option afficherCompetition(Equipe equipe)
+	{
+		return new Option("Afficher les equipes", "9", () -> {System.out.println(equipe.getCompetitions());});
+	}
+	
+	
 	private Menu menuPersonne()
 	{
 		Menu menuPersonne = new Menu("Gerer les personnes", "2");
@@ -297,7 +362,7 @@ public class DialogueUtilisateur
 		menu.add(afficherEquipe(personne));
 		menu.add(ajouterEquipe(personne));
 		menu.add(supprimerEquipe(personne));
-		//menu.add(afficherCompetition(personne));
+		menu.add(afficherCompetition(personne));
 		menu.addBack("10");
 		return menu;
 	}
@@ -356,6 +421,11 @@ public class DialogueUtilisateur
 				() -> new ArrayList<>(inscriptions.getEquipes()),
 				(index, element) -> {personne.remove(element);}
 				);
+	}
+	
+	private Option afficherCompetition(Personne personne)
+	{
+		return new Option("Afficher les equipes", "9", () -> {System.out.println(personne.getCompetitions());});
 	}
 	
 	public static void main(String[] args)
