@@ -201,11 +201,14 @@ public class DialogueUtilisateur
 	
 	private Option ajouterCandidat(final Competition competition)
 	{	
-		if(competition.estEnEquipe() == true)
+		LocalDate dateSysteme = LocalDate.now();
+		
+		if(competition.estEnEquipe() == true && dateSysteme.isBefore(competition.getDateCloture()))
 			return ajouterEquipe(competition);
-		else if(competition.estEnEquipe() == false)
+		else if(competition.estEnEquipe() == false && dateSysteme.isBefore(competition.getDateCloture()))
 			return ajouterPersonne(competition);
-		return null;
+		else
+			return compareDate(competition);
 	}
 	
 	private List<Equipe> ajouterEquipe(final Competition competition)
@@ -222,6 +225,13 @@ public class DialogueUtilisateur
 				() -> new ArrayList<>(inscriptions.getPersonnes()),
 				(index, element) -> {competition.add(element);}
 				);
+	}
+	
+	private Menu compareDate(Competition competition)
+	{
+		Menu compareDate = new Menu("On ne peut plus s'inscrire !", "6");
+		compareDate.addBack("1");
+		return compareDate;
 	}
 	
 	private List<Candidat> supprimerCandidat(final Competition competition)
