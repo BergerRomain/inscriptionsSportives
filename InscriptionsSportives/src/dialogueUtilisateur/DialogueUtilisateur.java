@@ -37,13 +37,13 @@ public class DialogueUtilisateur
 		Menu quitter = new Menu("Quitter", "q");
 		quitter.add(quitterEtEnregistrer());
 		quitter.add(quitterSansEnregistrer());
-		quitter.addBack("r");
+		quitter.addBack("q");
 		return quitter;
 	}
 	
 	private Option quitterEtEnregistrer()
 	{
-		return new Option("Quitter et enregistrer", "q", 
+		return new Option("Quitter et enregistrer", "e", 
 				() -> 
 				{
 					try
@@ -68,7 +68,7 @@ public class DialogueUtilisateur
 		Menu Inscription = new Menu("Inscription", "i");
 		Inscription.add(menuCompetition());
 		Inscription.add(candidat());
-		Inscription.addBack("r");
+		Inscription.addBack("q");
 		return Inscription;
 	}
 	
@@ -78,7 +78,7 @@ public class DialogueUtilisateur
 		menuCompetition.add(afficherCompetition());
 		menuCompetition.add(ajouterCompetition());
 		menuCompetition.add(selectionnerCompetition());
-		menuCompetition.addBack("r");
+		menuCompetition.addBack("q");
 		return menuCompetition;
 	}
 	
@@ -159,7 +159,7 @@ public class DialogueUtilisateur
 		menu.add(modifierCompetition(competition));
 		menu.add(supprimer(competition));
 		menu.add(modifierCandidat(competition));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
@@ -180,7 +180,7 @@ public class DialogueUtilisateur
 		Menu menu = new Menu("Modifier la competition", "m");
 		menu.add(modifierNom(competition));
 		menu.add(modifierDateCloture(competition));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
@@ -207,7 +207,7 @@ public class DialogueUtilisateur
 		menu.add(afficherCandidat(competition));
 		menu.add(ajouterCandidat(competition));
 		menu.add(supprimerCandidat(competition));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
@@ -247,7 +247,7 @@ public class DialogueUtilisateur
 	private Menu compareDate(Competition competition)
 	{
 		Menu compareDate = new Menu("On ne peut plus s'inscrire !", "e");
-		compareDate.addBack("r");
+		compareDate.addBack("q");
 		return compareDate;
 	}
 	
@@ -264,7 +264,7 @@ public class DialogueUtilisateur
 		Menu candidat = new Menu("Gerer les candidats", "g");
 		candidat.add(menuEquipe());
 		candidat.add(menuPersonne());
-		candidat.addBack("r");
+		candidat.addBack("q");
 		return candidat;
 	}
 	
@@ -274,7 +274,7 @@ public class DialogueUtilisateur
 		menuEquipe.add(afficherEquipe());
 		menuEquipe.add(ajouterEquipe());
 		menuEquipe.add(selectionnerEquipe());
-		menuEquipe.addBack("r");
+		menuEquipe.addBack("q");
 		return menuEquipe;
 	}
 	
@@ -304,7 +304,7 @@ public class DialogueUtilisateur
 		menu.add(supprimer(equipe));
 		menu.add(modifierMembres(equipe));
 		menu.add(afficherCompetition(equipe));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
@@ -335,7 +335,7 @@ public class DialogueUtilisateur
 		menu.add(afficherMembre(equipe));
 		menu.add(ajouterMembre(equipe));
 		menu.add(supprimerMembre(equipe));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
@@ -372,7 +372,7 @@ public class DialogueUtilisateur
 		menuPersonne.add(afficherPersonne());
 		menuPersonne.add(ajouterPersonne());
 		menuPersonne.add(selectionnerPersonne());
-		menuPersonne.addBack("r");	
+		menuPersonne.addBack("q");	
 		return menuPersonne;
 	}
 	
@@ -402,7 +402,7 @@ public class DialogueUtilisateur
 		menu.add(supprimer(personne));
 		menu.add(modifierEquipes(personne));
 		menu.add(afficherCompetition(personne));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
@@ -424,7 +424,7 @@ public class DialogueUtilisateur
 		menu.add(modifierNom(personne));
 		menu.add(modifierPrenom(personne));
 		menu.add(modifierMail(personne));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
@@ -457,7 +457,7 @@ public class DialogueUtilisateur
 		menu.add(afficherEquipe(personne));
 		menu.add(ajouterEquipe(personne));
 		menu.add(supprimerEquipe(personne));
-		menu.addBack("r");
+		menu.addBack("q");
 		return menu;
 	}
 	
