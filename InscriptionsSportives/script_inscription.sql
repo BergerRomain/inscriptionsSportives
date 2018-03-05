@@ -24,8 +24,8 @@ CREATE TABLE candidat(
 #------------------------------------------------------------
 
 CREATE TABLE personne(
-	    numCandidat          Int NOT NULL ,
-        prenomPersonne       Varchar (25) ,
+	    numPersonne          Int,
+        prenomPersonne       Varchar (25),
         mail 				 Varchar (50),
         PRIMARY KEY (numCandidat )
 )ENGINE=InnoDB;
@@ -39,8 +39,8 @@ CREATE TABLE Competition(
         numCompetition int (11) Auto_increment  NOT NULL ,
         nomCompetition Varchar (25) ,
         dateCloture    Date ,
-        enEquipe	   Varchar(3),
-        PRIMARY KEY (numCompetition )
+        enEquipe	   boolean,
+        PRIMARY KEY (numCompetition)
 )ENGINE=InnoDB;
 
 
@@ -49,8 +49,8 @@ CREATE TABLE Competition(
 #------------------------------------------------------------
 
 CREATE TABLE equipe(
-        numCandidat Int NOT NULL ,
-        PRIMARY KEY (numCandidat )
+        numEquipe Int,
+        PRIMARY KEY (numCandidat)
 )ENGINE=InnoDB;
 
 
@@ -59,12 +59,25 @@ CREATE TABLE equipe(
 #------------------------------------------------------------
 
 CREATE TABLE etre_inscrit(
-        numCandidat    Int NOT NULL ,
-        numCompetition Int NOT NULL ,
-        PRIMARY KEY (numCandidat ,numCompetition )
+        numCandidat    Int,
+        numCompetition Int,
+        PRIMARY KEY (numCandidat ,numCompetition)
 )ENGINE=InnoDB;
 
-ALTER TABLE personne ADD CONSTRAINT FK_personne_numCandidat FOREIGN KEY (numCandidat) REFERENCES candidat(numCandidat);
-ALTER TABLE equipe ADD CONSTRAINT FK_equipe_numCandidat FOREIGN KEY (numCandidat) REFERENCES candidat(numCandidat);
+#------------------------------------------------------------
+# Table: être dans une equipe
+#------------------------------------------------------------
+
+CREATE TABLE etre_dans_une_equipe(
+        numEquipe      Int,
+        numPersonne    Int,
+        PRIMARY KEY (numEquipe ,numPersonne)
+)ENGINE=InnoDB;
+
+
+ALTER TABLE personne ADD CONSTRAINT FK_personne_numCandidat FOREIGN KEY (numPersonne) REFERENCES candidat(numCandidat);
+ALTER TABLE equipe ADD CONSTRAINT FK_equipe_numCandidat FOREIGN KEY (numEquipe) REFERENCES candidat(numCandidat);
 ALTER TABLE etre_inscrit ADD CONSTRAINT FK_etre_inscrit_numCandidat FOREIGN KEY (numCandidat) REFERENCES candidat(numCandidat);
 ALTER TABLE etre_inscrit ADD CONSTRAINT FK_etre_inscrit_numCompetition FOREIGN KEY (numCompetition) REFERENCES Competition(numCompetition);
+ALTER TABLE etre_dans_une_equipe ADD CONSTRAINT FK_etre_dans_une_equipe_numEquipe FOREIGN KEY (numEquipe) REFERENCES candidat(numCandidat);
+ALTER TABLE etre_dans_une_equipe ADD CONSTRAINT FK_etre_dans_une_equipe_numPersonne FOREIGN KEY (numPersonne) REFERENCES candidat(numCandidat);
