@@ -1,4 +1,4 @@
-package hibernate.inscriptionSportives;
+package dialogueUtilisateur;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

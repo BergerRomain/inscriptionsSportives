@@ -18,6 +18,9 @@
 	<property name="hbm2ddl.auto">create</property>
 	
 	<mapping class="hibernate.inscriptionSportives.Personnes" />
+	<mapping class="hibernate.inscriptionSportives.Equipes" />
+	<mapping class="hibernate.inscriptionSportives.Candidats" />	
+	<mapping class="hibernate.inscriptionSportives.Competitions" />
          
 </session-factory>
 </hibernate-configuration>
