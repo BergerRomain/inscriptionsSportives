@@ -1,4 +1,4 @@
-package dialogueUtilisateur;
+package hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 	@Entity
-	@Table(name = "personne")
+	@Table(name = "personnes")
 	public class Personnes
 	{
 		@Id
