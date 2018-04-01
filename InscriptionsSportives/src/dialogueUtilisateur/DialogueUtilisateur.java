@@ -78,6 +78,8 @@ public class DialogueUtilisateur
 		Menu menuCompetition = new Menu("Gerer les competitions", "c");
 		menuCompetition.add(afficherCompetition());
 		menuCompetition.add(ajouterCompetition());
+		menuCompetition.add(modifierCompetition());
+		menuCompetition.add(supprimerCompetition());
 		menuCompetition.add(selectionnerCompetition());
 		menuCompetition.addBack("q");
 		return menuCompetition;
@@ -137,17 +139,41 @@ public class DialogueUtilisateur
 	
 	private Option afficherCompetition()
 	{
-		return new Option("Afficher les competitions", "a", () -> {System.out.println(inscriptions.getCompetitions());});
+		return new Option("Afficher les competitions", "a", () -> {
+			for (Competitions competition : gestionbase.getCompetitions())
+				System.out.println(competition);});
 	}
 	
 	private Option ajouterCompetition()
 	{
-		return new Option("Ajouter une competition", "j", () -> inscriptions.createCompetition(getString("Nom : "), getLocalDate("Date : "), (boolean)getBoolean("En equipe (oui/non) ? ")));
+		return new Option("Ajouter une competition", "j", () -> { 			
+			gestionbase.sauvegarder(new Competitions(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
+	}
+	
+	private Option modifierCompetition()
+	{
+		return new Option("Modifier une compétition", "m", 
+				() -> 
+				{
+					gestionbase.sauvegarder(new Competitions(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
+				}
+			);
+	}
+	
+	private Option supprimerCompetition()
+	{
+		return new List<>("Supprimer une compétition", "s",
+				() -> gestionbase.getCompetitions(),
+				(indice, element) -> 
+					{
+						gestionbase.supprimer(element);
+					}
+				);
 	}
 	
 	private List<Competition> selectionnerCompetition()
 	{
-		return new List<Competition>("Selectionner une Competition", "s", 
+		return new List<Competition>("Selectionner une Competition", "c", 
 				() -> new ArrayList<>(inscriptions.getCompetitions()),
 				(element) -> editerCompetition(element)
 				);
@@ -157,8 +183,6 @@ public class DialogueUtilisateur
 	{
 		Menu menu = new Menu("Editer " + competition.getNom());
 		menu.add(afficher(competition));
-		menu.add(modifierCompetition(competition));
-		menu.add(supprimer(competition));
 		menu.add(modifierCandidat(competition));
 		menu.addBack("q");
 		return menu;
@@ -174,32 +198,6 @@ public class DialogueUtilisateur
 					System.out.println("en equipe : : " + competition.estEnEquipe());
 				}
 		);
-	}
-	
-	private Menu modifierCompetition(Competition competition)
-	{
-		Menu menu = new Menu("Modifier la competition", "m");
-		menu.add(modifierNom(competition));
-		menu.add(modifierDateCloture(competition));
-		menu.addBack("q");
-		return menu;
-	}
-	
-	private Option modifierNom(Competition competition)
-	{
-		return new Option("Modifier le nom", "n", 
-				() -> {competition.setNom(getString("Nouveau nom : "));});
-	}
-	
-	private Option modifierDateCloture(Competition competition)
-	{
-		return new Option("Modifier la date de cloture", "d", 
-				() -> {competition.setDateCloture(getLocalDate("Nouvelle date de cloture : "));});
-	}
-	
-	private Option supprimer(Competition competition)
-	{
-		return new Option("Supprimer", "s", () -> {competition.delete();});
 	}
 	
 	private Menu modifierCandidat(Competition competition)
@@ -274,6 +272,8 @@ public class DialogueUtilisateur
 		Menu menuEquipe = new Menu("Gerer les equipes", "e");
 		menuEquipe.add(afficherEquipe());
 		menuEquipe.add(ajouterEquipe());
+		menuEquipe.add(modifierEquipe());
+		menuEquipe.add(supprimerEquipe());
 		menuEquipe.add(selectionnerEquipe());
 		menuEquipe.addBack("q");
 		return menuEquipe;
@@ -281,17 +281,41 @@ public class DialogueUtilisateur
 	
 	private Option afficherEquipe()
 	{
-		return new Option("Afficher les equipes", "a", () -> {System.out.println(inscriptions.getEquipes());});
+		return new Option("Afficher les equipes", "a", () -> {
+			for (Equipes equipe : gestionbase.getEquipes())
+				System.out.println(equipe);});
 	}
 	
 	private Option ajouterEquipe()
 	{
-		return new Option("Ajouter une equipe", "e", () -> inscriptions.createEquipe(getString("Nom : ")));
+		return new Option("Ajouter une equipe", "j", () -> { 			
+			gestionbase.sauvegarder(new Equipes(InOut.getString("Nom : ")));});
+	}
+	
+	private Option modifierEquipe()
+	{
+		return new Option("Modifier une équipe", "m", 
+				() -> 
+				{
+					gestionbase.sauvegarder(new Equipes(InOut.getString("Nom : ")));
+				}
+			);
+	}
+	
+	private Option supprimerEquipe()
+	{
+		return new List<>("Supprimer une équipe", "s",
+				() -> gestionbase.getEquipes(),
+				(indice, element) -> 
+					{
+						gestionbase.supprimer(element);
+					}
+				);
 	}
 	
 	private List<Equipe> selectionnerEquipe()
 	{
-		return new List<Equipe>("Selectionner une equipe", "s", 
+		return new List<Equipe>("Selectionner une equipe", "c", 
 				() -> new ArrayList<>(inscriptions.getEquipes()),
 				(element) -> editerEquipe(element)
 				);
@@ -301,8 +325,6 @@ public class DialogueUtilisateur
 	{
 		Menu menu = new Menu("Editer " + equipe.getNom());
 		menu.add(afficher(equipe));
-		menu.add(modifierNom(equipe));
-		menu.add(supprimer(equipe));
 		menu.add(modifierMembres(equipe));
 		menu.add(afficherCompetition(equipe));
 		menu.addBack("q");
@@ -317,17 +339,6 @@ public class DialogueUtilisateur
 					System.out.println("Nom : " + equipe.getNom());
 				}
 		);
-	}
-	
-	private Option modifierNom(Equipe equipe)
-	{
-		return new Option("Modifier le nom", "m", 
-				() -> {equipe.setNom(getString("Nouveau nom : "));});
-	}
-	
-	private Option supprimer(Equipe equipe)
-	{
-		return new Option("Supprimer", "s", () -> {equipe.delete();});
 	}
 	
 	private Menu modifierMembres(Equipe equipe)
@@ -372,6 +383,8 @@ public class DialogueUtilisateur
 		Menu menuPersonne = new Menu("Gerer les personnes", "p");
 		menuPersonne.add(afficherPersonne());
 		menuPersonne.add(ajouterPersonne());
+		menuPersonne.add(modifierPersonne());
+		menuPersonne.add(supprimerPersonne());
 		menuPersonne.add(selectionnerPersonne());
 		menuPersonne.addBack("q");	
 		return menuPersonne;
@@ -386,29 +399,49 @@ public class DialogueUtilisateur
 	
 	private Option ajouterPersonne()
 	{
-		return new Option("Ajouter une personne", "p", () -> 
+		return new Option("Ajouter une personne", "j", () -> 
 		{
 			gestionbase.sauvegarder(new Personnes(InOut.getString("Nom : "), 
 					InOut.getString("Prenom : "), InOut.getString("Mail : ")));
 		});
 	}
 	
+	private Option modifierPersonne()
+	{
+		return new Option("Modifier une personne", "m", 
+				() -> 
+				{
+					gestionbase.sauvegarder(new Personnes(InOut.getString("Prenom : "), 
+							InOut.getString("Nom : "), InOut.getString("Mail : ")));
+				}
+			);
+	}
+	
+	private Option supprimerPersonne()
+	{
+		return new List<>("Supprimer une personne", "s",
+				() -> gestionbase.getPersonnes(),
+				(indice, element) -> 
+					{
+						gestionbase.supprimer(element);
+					}
+				);
+	}
+	
 	private List<Personne> selectionnerPersonne()
 	{
-		return new List<Personne>("Selectionner une personne", "s", 
+		return new List<Personne>("Selectionner une personne", "c", 
 				() -> new ArrayList<>(inscriptions.getPersonnes()),
 				(element) -> editerPersonne(element)
 				);
 	}
 	
-	private Menu editerPersonne(Personne personne)
+	private Menu editerPersonne(Personne element)
 	{
-		Menu menu = new Menu("Editer " + personne.getNom());
-		menu.add(afficher(personne));
-		menu.add(modifierPersonne(personne));
-		menu.add(supprimer(personne));
-		menu.add(modifierEquipes(personne));
-		menu.add(afficherCompetition(personne));
+		Menu menu = new Menu("Editer " + element.getNom());
+		menu.add(afficher(element));
+		menu.add(modifierEquipes(element));
+		menu.add(afficherCompetition(element));
 		menu.addBack("q");
 		return menu;
 	}
@@ -423,39 +456,6 @@ public class DialogueUtilisateur
 					System.out.println("Mail : " + personne.getMail());
 				}
 		);
-	}
-	
-	private Menu modifierPersonne(Personne personne)
-	{
-		Menu menu = new Menu("Modifier " + personne.getNom(), "m");
-		menu.add(modifierNom(personne));
-		menu.add(modifierPrenom(personne));
-		menu.add(modifierMail(personne));
-		menu.addBack("q");
-		return menu;
-	}
-	
-	private Option modifierNom(Personne personne)
-	{
-		return new Option("Modifier le nom", "n", 
-				() -> {personne.setNom(getString("Nouveau nom : "));});
-	}
-	
-	private Option modifierPrenom(Personne personne)
-	{
-		return new Option("Modifier le prenom", "p", 
-				() -> {personne.setPrenom(getString("Nouveau prenom : "));});
-	}
-	
-	private Option modifierMail (Personne personne)
-	{
-		return new Option("Modifier le mail", "m", 
-				() -> {personne.setMail(getString("Nouveau mail : "));});
-	}
-	
-	private Option supprimer(Personne personne)
-	{
-		return new Option("Supprimer", "s", () -> {personne.delete();});
 	}
 	
 	private Menu modifierEquipes(Personne personne)

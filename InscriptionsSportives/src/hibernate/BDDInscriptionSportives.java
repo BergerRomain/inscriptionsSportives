@@ -47,7 +47,51 @@ abstract class BDDInscriptionSportives
 	}
 
 	@SuppressWarnings("unchecked")
-	static java.util.List<Personnes> refreshList()
+	static java.util.List<Personnes> refreshListPersonnes()
+	{
+		Query query = session.createQuery("from Personnes");
+		return query.list();
+	}
+	
+	
+	static void delete(Competitions competition)
+	{
+		Transaction tx = session.beginTransaction();
+		session.delete(competition);
+		tx.commit();
+	}
+
+	static void save(Competitions competition)
+	{
+		Transaction tx = session.beginTransaction();
+		session.save(competition);
+		tx.commit();
+	}
+
+	@SuppressWarnings("unchecked")
+	static java.util.List<Competitions> refreshListCompetitions()
+	{
+		Query query = session.createQuery("from Personnes");
+		return query.list();
+	}
+	
+		
+	static void delete(Equipes equipe)
+	{
+		Transaction tx = session.beginTransaction();
+		session.delete(equipe);
+		tx.commit();
+	}
+
+	static void save(Equipes equipe)
+	{
+		Transaction tx = session.beginTransaction();
+		session.save(equipe);
+		tx.commit();
+	}
+
+	@SuppressWarnings("unchecked")
+	static java.util.List<Equipes> refreshListEquipes()
 	{
 		Query query = session.createQuery("from Personnes");
 		return query.list();
