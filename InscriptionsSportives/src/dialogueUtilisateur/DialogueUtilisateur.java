@@ -6,21 +6,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import commandLineMenus.*;
+import commandLineMenus.rendering.examples.util.InOut;
 import inscriptions.*;
+import hibernate.*;
+
 import static commandLineMenus.rendering.examples.util.InOut.*;
 
 public class DialogueUtilisateur 
 {
 	private static final Exception IOException = null;
 	private Inscriptions inscriptions;
+	GestionBase gestionbase;
 	
-	public DialogueUtilisateur(Inscriptions inscriptions)
+	public DialogueUtilisateur(Inscriptions inscriptions, GestionBase gestionbase)
 	{
 		this.inscriptions = inscriptions;
-	}
-	
-	public void start()
-	{
+		this.gestionbase = gestionbase;
 		inscriptionMenu().start();
 	}
 	
@@ -378,12 +379,18 @@ public class DialogueUtilisateur
 	
 	private Option afficherPersonne()
 	{
-		return new Option("Afficher les personnes", "a", () -> {System.out.println(inscriptions.getPersonnes());});
+		return new Option("Afficher les personnes", "a", () -> {
+			for (Personnes personnes : gestionbase.getPersonnes())
+				System.out.println(personnes);});
 	}
 	
 	private Option ajouterPersonne()
 	{
-		return new Option("Ajouter une personne", "p", () -> inscriptions.createPersonne(getString("Nom : "), getString("Prenom : "), getString("Mail : ")));
+		return new Option("Ajouter une personne", "p", () -> 
+		{
+			gestionbase.sauvegarder(new Personnes(InOut.getString("Nom : "), 
+					InOut.getString("Prenom : "), InOut.getString("Mail : ")));
+		});
 	}
 	
 	private List<Personne> selectionnerPersonne()
@@ -476,7 +483,7 @@ public class DialogueUtilisateur
 	
 	private List<Equipe> supprimerEquipe(final Personne personne)
 	{
-		return new List<>("Supprimer une quipe", "s", 
+		return new List<>("Supprimer une equipe", "s", 
 				() -> new ArrayList<>(inscriptions.getEquipes()),
 				(index, element) -> {personne.remove(element);}
 				);
@@ -489,7 +496,6 @@ public class DialogueUtilisateur
 	
 	public static void main(String[] args)
 	{
-		DialogueUtilisateur console = new DialogueUtilisateur(Inscriptions.getInscriptions());
-		console.start();
+		new DialogueUtilisateur(Inscriptions.getInscriptions(), GestionBase.getGestionBase());
 	}
 }

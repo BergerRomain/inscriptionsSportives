@@ -19,7 +19,6 @@
 	
 	<mapping class="hibernate.Personnes" />
 	<mapping class="hibernate.Equipes" />
-	<mapping class="hibernate.Candidats" />	
 	<mapping class="hibernate.Competitions" />
 
 </session-factory>
