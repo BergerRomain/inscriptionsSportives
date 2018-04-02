@@ -8,20 +8,17 @@ import java.util.ArrayList;
 import commandLineMenus.*;
 import commandLineMenus.rendering.examples.util.InOut;
 import inscriptions.*;
-import hibernate.*;
 
 import static commandLineMenus.rendering.examples.util.InOut.*;
 
 public class DialogueUtilisateur 
 {
 	private static final Exception IOException = null;
-	private Inscriptions inscriptions;
-	GestionBase gestionbase;
+	private GestionBase inscriptions;
 	
-	public DialogueUtilisateur(Inscriptions inscriptions, GestionBase gestionbase)
+	public DialogueUtilisateur(GestionBase inscriptions)
 	{
 		this.inscriptions = inscriptions;
-		this.gestionbase = gestionbase;
 		inscriptionMenu().start();
 	}
 	
@@ -33,35 +30,9 @@ public class DialogueUtilisateur
 		return inscriptionMenu;
 	}
 	
-	private Menu quitter()
+	private Option quitter()
 	{
-		Menu quitter = new Menu("Quitter", "q");
-		quitter.add(quitterEtEnregistrer());
-		quitter.add(quitterSansEnregistrer());
-		quitter.addBack("q");
-		return quitter;
-	}
-	
-	private Option quitterEtEnregistrer()
-	{
-		return new Option("Quitter et enregistrer", "e", 
-				() -> 
-				{
-					try
-					{
-						inscriptions.sauvegarder();
-						Action.QUIT.optionSelected();
-					} 
-					catch (IOException e) {
-						System.out.println("Impossible d'effectuer la sauvegarde");
-					}
-				}
-			);
-	}
-	
-	private Option quitterSansEnregistrer()
-	{
-		return new Option("Quitter sans enregistrer", "s", Action.QUIT);
+		return new Option("Quitter", "s", Action.QUIT);
 	}
 	
 	private Menu Inscription()
@@ -140,33 +111,33 @@ public class DialogueUtilisateur
 	private Option afficherCompetition()
 	{
 		return new Option("Afficher les competitions", "a", () -> {
-			for (Competitions competition : gestionbase.getCompetitions())
+			for (Competition competition : inscriptions.getCompetitions())
 				System.out.println(competition);});
 	}
 	
 	private Option ajouterCompetition()
 	{
 		return new Option("Ajouter une competition", "j", () -> { 			
-			gestionbase.sauvegarder(new Competitions(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
+			inscriptions.sauvegarder(new Competition(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
 	}
 	
 	private Option modifierCompetition()
 	{
-		return new Option("Modifier une compétition", "m", 
+		return new Option("Modifier une competition", "m", 
 				() -> 
 				{
-					gestionbase.sauvegarder(new Competitions(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
+					inscriptions.sauvegarder(new Competition(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
 				}
 			);
 	}
 	
 	private Option supprimerCompetition()
 	{
-		return new List<>("Supprimer une compétition", "s",
-				() -> gestionbase.getCompetitions(),
+		return new List<>("Supprimer une competition", "s",
+				() -> inscriptions.getCompetitions(),
 				(indice, element) -> 
 					{
-						gestionbase.supprimer(element);
+						inscriptions.supprimer(element);
 					}
 				);
 	}
@@ -282,14 +253,14 @@ public class DialogueUtilisateur
 	private Option afficherEquipe()
 	{
 		return new Option("Afficher les equipes", "a", () -> {
-			for (Equipes equipe : gestionbase.getEquipes())
+			for (Equipe equipe : inscriptions.getEquipes())
 				System.out.println(equipe);});
 	}
 	
 	private Option ajouterEquipe()
 	{
 		return new Option("Ajouter une equipe", "j", () -> { 			
-			gestionbase.sauvegarder(new Equipes(InOut.getString("Nom : ")));});
+			inscriptions.sauvegarder(new Equipe(InOut.getString("Nom : ")));});
 	}
 	
 	private Option modifierEquipe()
@@ -297,7 +268,7 @@ public class DialogueUtilisateur
 		return new Option("Modifier une équipe", "m", 
 				() -> 
 				{
-					gestionbase.sauvegarder(new Equipes(InOut.getString("Nom : ")));
+					inscriptions.sauvegarder(new Equipe(InOut.getString("Nom : ")));
 				}
 			);
 	}
@@ -305,10 +276,10 @@ public class DialogueUtilisateur
 	private Option supprimerEquipe()
 	{
 		return new List<>("Supprimer une équipe", "s",
-				() -> gestionbase.getEquipes(),
+				() -> inscriptions.getEquipes(),
 				(indice, element) -> 
 					{
-						gestionbase.supprimer(element);
+						inscriptions.supprimer(element);
 					}
 				);
 	}
@@ -393,7 +364,7 @@ public class DialogueUtilisateur
 	private Option afficherPersonne()
 	{
 		return new Option("Afficher les personnes", "a", () -> {
-			for (Personnes personnes : gestionbase.getPersonnes())
+			for (Personne personnes : inscriptions.getPersonnes())
 				System.out.println(personnes);});
 	}
 	
@@ -401,7 +372,7 @@ public class DialogueUtilisateur
 	{
 		return new Option("Ajouter une personne", "j", () -> 
 		{
-			gestionbase.sauvegarder(new Personnes(InOut.getString("Nom : "), 
+			inscriptions.sauvegarder(new Personne(InOut.getString("Nom : "), 
 					InOut.getString("Prenom : "), InOut.getString("Mail : ")));
 		});
 	}
@@ -411,7 +382,7 @@ public class DialogueUtilisateur
 		return new Option("Modifier une personne", "m", 
 				() -> 
 				{
-					gestionbase.sauvegarder(new Personnes(InOut.getString("Prenom : "), 
+					inscriptions.sauvegarder(new Personne(InOut.getString("Prenom : "), 
 							InOut.getString("Nom : "), InOut.getString("Mail : ")));
 				}
 			);
@@ -420,10 +391,10 @@ public class DialogueUtilisateur
 	private Option supprimerPersonne()
 	{
 		return new List<>("Supprimer une personne", "s",
-				() -> gestionbase.getPersonnes(),
+				() -> inscriptions.getPersonnes(),
 				(indice, element) -> 
 					{
-						gestionbase.supprimer(element);
+						inscriptions.supprimer(element);
 					}
 				);
 	}
@@ -496,6 +467,6 @@ public class DialogueUtilisateur
 	
 	public static void main(String[] args)
 	{
-		new DialogueUtilisateur(Inscriptions.getInscriptions(), GestionBase.getGestionBase());
+		new DialogueUtilisateur(GestionBase.getGestionBase());
 	}
 }

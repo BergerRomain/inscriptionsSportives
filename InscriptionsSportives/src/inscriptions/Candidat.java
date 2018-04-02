@@ -5,11 +5,23 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 /**
  * Candidat à un événement sportif, soit une personne physique, soit une équipe.
  *
  */
 
+@Entity
+@Table(name = "Candidat")
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Candidat implements Comparable<Candidat>, Serializable
 {
 	private static final long serialVersionUID = -6035399822298694746L;
@@ -17,11 +29,24 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 	private String nom;
 	private Set<Competition> competitions;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "numCandidat")
+	private int numCandidat;
+
+	@Column(name = "nomCandidat")
+	private String nomCandidat;
+	
 	Candidat(Inscriptions inscriptions, String nom)
 	{
 		this.inscriptions = inscriptions;	
 		this.nom = nom;
 		competitions = new TreeSet<>();
+	}
+	
+	public Candidat(String nomCandidat)
+	{
+		this.nomCandidat = nomCandidat;
 	}
 
 	/**

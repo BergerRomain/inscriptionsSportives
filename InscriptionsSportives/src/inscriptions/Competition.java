@@ -6,12 +6,21 @@ import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Représente une compétition, c'est-à-dire un ensemble de candidats 
  * inscrits à un événement, les inscriptions sont closes à la date dateCloture.
  *
  */
 
+@Entity
+@Table(name = "Competition")
 public class Competition implements Comparable<Competition>, Serializable
 {
 	private static final long serialVersionUID = -2882150118573759729L;
@@ -22,6 +31,20 @@ public class Competition implements Comparable<Competition>, Serializable
 	private boolean enEquipe = false;
 	private LocalDate dateSysteme = LocalDate.now();
 
+		@Id
+		@GeneratedValue(strategy = GenerationType.AUTO)
+		@Column(name = "numCompetition")
+		private int numCompetition;
+
+		@Column(name = "nomCompetition")
+		private String nomCompetition;
+
+		@Column(name = "dateCloture")
+		private LocalDate dateDeCloture;
+		
+		@Column(name = "enEquipe")
+		private boolean enEquipes;
+	
 	Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
 	{
 		this.enEquipe = enEquipe;
@@ -29,6 +52,13 @@ public class Competition implements Comparable<Competition>, Serializable
 		this.nom = nom;
 		this.dateCloture = dateCloture;
 		candidats = new TreeSet<>();
+	}
+	
+	public Competition(String nomCompetition, LocalDate dateCloture, boolean enEquipe)
+	{
+		this.nomCompetition = nomCompetition;
+		this.dateCloture = dateCloture;
+		this.enEquipe = enEquipe;
 	}
 	
 	/**

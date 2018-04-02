@@ -4,20 +4,42 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Représente une Equipe. C'est-à-dire un ensemble de personnes pouvant 
  * s'inscrire à une compétition.
  * 
  */
 
+@Entity
+@Table(name = "Equipe")
 public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;
 	private SortedSet<Personne> membres = new TreeSet<>();
 	
+		@Id
+		@GeneratedValue(strategy = GenerationType.AUTO)
+		@Column(name = "numCandidat")
+		private int numCandidat;
+
+		@Column(name = "nomEquipes")
+		private String nomEquipes;
+	
 	Equipe(Inscriptions inscriptions, String nom)
 	{
 		super(inscriptions, nom);
+	}
+	
+	public Equipe(String nomEquipes)
+	{
+		super(nomEquipes);
 	}
 
 	/**

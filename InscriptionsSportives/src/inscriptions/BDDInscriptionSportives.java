@@ -1,4 +1,4 @@
-package hibernate;
+package inscriptions;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -19,7 +19,7 @@ abstract class BDDInscriptionSportives
 		try
 		{
 			Configuration configuration = new Configuration()
-					.configure("hibernate/BDDInscriptionSportives.cfg.xml");
+					.configure("inscriptions/BDDInscriptionSportives.cfg.xml");
 			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties()).build();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
@@ -32,14 +32,14 @@ abstract class BDDInscriptionSportives
 		}
 	}
 
-	static void delete(Personnes personne)
+	static void delete(Personne personne)
 	{
 		Transaction tx = session.beginTransaction();
 		session.delete(personne);
 		tx.commit();
 	}
 
-	static void save(Personnes personne)
+	static void save(Personne personne)
 	{
 		Transaction tx = session.beginTransaction();
 		session.save(personne);
@@ -47,21 +47,21 @@ abstract class BDDInscriptionSportives
 	}
 
 	@SuppressWarnings("unchecked")
-	static java.util.List<Personnes> refreshListPersonnes()
+	static java.util.List<Personne> refreshListPersonnes()
 	{
-		Query query = session.createQuery("from Personnes");
+		Query query = session.createQuery("from Personne");
 		return query.list();
 	}
 	
 	
-	static void delete(Competitions competition)
+	static void delete(Competition competition)
 	{
 		Transaction tx = session.beginTransaction();
 		session.delete(competition);
 		tx.commit();
 	}
 
-	static void save(Competitions competition)
+	static void save(Competition competition)
 	{
 		Transaction tx = session.beginTransaction();
 		session.save(competition);
@@ -69,21 +69,21 @@ abstract class BDDInscriptionSportives
 	}
 
 	@SuppressWarnings("unchecked")
-	static java.util.List<Competitions> refreshListCompetitions()
+	static java.util.List<Competition> refreshListCompetitions()
 	{
-		Query query = session.createQuery("from Personnes");
+		Query query = session.createQuery("from Competition");
 		return query.list();
 	}
 	
 		
-	static void delete(Equipes equipe)
+	static void delete(Equipe equipe)
 	{
 		Transaction tx = session.beginTransaction();
 		session.delete(equipe);
 		tx.commit();
 	}
 
-	static void save(Equipes equipe)
+	static void save(Equipe equipe)
 	{
 		Transaction tx = session.beginTransaction();
 		session.save(equipe);
@@ -91,9 +91,16 @@ abstract class BDDInscriptionSportives
 	}
 
 	@SuppressWarnings("unchecked")
-	static java.util.List<Equipes> refreshListEquipes()
+	static java.util.List<Equipe> refreshListEquipes()
 	{
-		Query query = session.createQuery("from Personnes");
+		Query query = session.createQuery("from Equipe");
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	static java.util.List<Candidat> refreshListCandidats()
+	{
+		Query query = session.createQuery("from Candidat");
 		return query.list();
 	}
 }
