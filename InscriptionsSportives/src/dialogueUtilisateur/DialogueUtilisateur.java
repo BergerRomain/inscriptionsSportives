@@ -123,9 +123,10 @@ public class DialogueUtilisateur
 	
 	private Option modifierCompetition()
 	{
-		return new Option("Modifier une competition", "m", 
-				() -> 
-				{
+		return new List<>("Modifier", "m",
+				() -> inscriptions.getCompetitions(),
+				(indice, element) -> 
+					{
 					inscriptions.sauvegarder(new Competition(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
 				}
 			);
@@ -265,9 +266,10 @@ public class DialogueUtilisateur
 	
 	private Option modifierEquipe()
 	{
-		return new Option("Modifier une équipe", "m", 
-				() -> 
-				{
+		return new List<>("Modifier", "m",
+				() -> inscriptions.getEquipes(),
+				(indice, element) -> 
+					{
 					inscriptions.sauvegarder(new Equipe(InOut.getString("Nom : ")));
 				}
 			);
@@ -275,7 +277,7 @@ public class DialogueUtilisateur
 	
 	private Option supprimerEquipe()
 	{
-		return new List<>("Supprimer une équipe", "s",
+		return new List<>("Supprimer une equipe", "s",
 				() -> inscriptions.getEquipes(),
 				(indice, element) -> 
 					{
@@ -379,9 +381,10 @@ public class DialogueUtilisateur
 	
 	private Option modifierPersonne()
 	{
-		return new Option("Modifier une personne", "m", 
-				() -> 
-				{
+		return new List<>("Modifier", "m",
+				() -> inscriptions.getPersonnes(),
+				(indice, element) -> 
+					{
 					inscriptions.sauvegarder(new Personne(InOut.getString("Prenom : "), 
 							InOut.getString("Nom : "), InOut.getString("Mail : ")));
 				}
