@@ -17,10 +17,10 @@
 			
 	<property name="hbm2ddl.auto">create</property>
 	
-	<mapping class="inscriptions.Candidats" />
-	<mapping class="inscriptions.Personnes" />
-	<mapping class="inscriptions.Equipes" />
-	<mapping class="inscriptions.Competitions" />
+	<mapping class="inscriptions.Candidat" />
+	<mapping class="inscriptions.Personne" />
+	<mapping class="inscriptions.Equipe" />
+	<mapping class="inscriptions.Competition" />
 
 </session-factory>
 </hibernate-configuration>

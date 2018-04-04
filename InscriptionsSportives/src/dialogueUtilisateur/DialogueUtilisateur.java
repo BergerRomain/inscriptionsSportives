@@ -32,7 +32,7 @@ public class DialogueUtilisateur
 	
 	private Option quitter()
 	{
-		return new Option("Quitter", "s", Action.QUIT);
+		return new Option("Quitter", "q", Action.QUIT);
 	}
 	
 	private Menu Inscription()
@@ -111,7 +111,7 @@ public class DialogueUtilisateur
 	private Option afficherCompetition()
 	{
 		return new Option("Afficher les competitions", "a", () -> {
-			for (Competition competition : inscriptions.getCompetitions())
+			for (Competition competition : inscriptions.getCompetition())
 				System.out.println(competition);});
 	}
 	
@@ -124,7 +124,7 @@ public class DialogueUtilisateur
 	private Option modifierCompetition()
 	{
 		return new List<>("Modifier", "m",
-				() -> inscriptions.getCompetitions(),
+				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
 					{
 					inscriptions.sauvegarder(new Competition(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
@@ -135,7 +135,7 @@ public class DialogueUtilisateur
 	private Option supprimerCompetition()
 	{
 		return new List<>("Supprimer une competition", "s",
-				() -> inscriptions.getCompetitions(),
+				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
 					{
 						inscriptions.supprimer(element);
@@ -146,7 +146,7 @@ public class DialogueUtilisateur
 	private List<Competition> selectionnerCompetition()
 	{
 		return new List<Competition>("Selectionner une Competition", "c", 
-				() -> new ArrayList<>(inscriptions.getCompetitions()),
+				() -> new ArrayList<>(inscriptions.getCompetition()),
 				(element) -> editerCompetition(element)
 				);
 	}
@@ -202,7 +202,7 @@ public class DialogueUtilisateur
 	private List<Equipe> ajouterEquipe(final Competition competition)
 	{
 		return new List<>("Ajouter une equipe", "e", 
-				() -> new ArrayList<>(inscriptions.getEquipes()),
+				() -> new ArrayList<>(inscriptions.getEquipe()),
 				(index, element) -> {competition.add(element);}
 				);
 	}
@@ -210,7 +210,7 @@ public class DialogueUtilisateur
 	private List<Personne> ajouterPersonne(final Competition competition)
 	{
 		return new List<>("Ajouter une personne", "e", 
-				() -> new ArrayList<>(inscriptions.getPersonnes()),
+				() -> new ArrayList<>(inscriptions.getPersonne()),
 				(index, element) -> {competition.add(element);}
 				);
 	}
@@ -225,7 +225,7 @@ public class DialogueUtilisateur
 	private List<Candidat> supprimerCandidat(final Competition competition)
 	{
 		return new List<>("Supprimer un candidat", "s", 
-				() -> new ArrayList<>(inscriptions.getCandidats()),
+				() -> new ArrayList<>(inscriptions.getCandidat()),
 				(index, element) -> {competition.remove(element);}
 				);
 	}
@@ -254,7 +254,7 @@ public class DialogueUtilisateur
 	private Option afficherEquipe()
 	{
 		return new Option("Afficher les equipes", "a", () -> {
-			for (Equipe equipe : inscriptions.getEquipes())
+			for (Equipe equipe : inscriptions.getEquipe())
 				System.out.println(equipe);});
 	}
 	
@@ -267,7 +267,7 @@ public class DialogueUtilisateur
 	private Option modifierEquipe()
 	{
 		return new List<>("Modifier", "m",
-				() -> inscriptions.getEquipes(),
+				() -> inscriptions.getEquipe(),
 				(indice, element) -> 
 					{
 					inscriptions.sauvegarder(new Equipe(InOut.getString("Nom : ")));
@@ -278,7 +278,7 @@ public class DialogueUtilisateur
 	private Option supprimerEquipe()
 	{
 		return new List<>("Supprimer une equipe", "s",
-				() -> inscriptions.getEquipes(),
+				() -> inscriptions.getEquipe(),
 				(indice, element) -> 
 					{
 						inscriptions.supprimer(element);
@@ -289,7 +289,7 @@ public class DialogueUtilisateur
 	private List<Equipe> selectionnerEquipe()
 	{
 		return new List<Equipe>("Selectionner une equipe", "c", 
-				() -> new ArrayList<>(inscriptions.getEquipes()),
+				() -> new ArrayList<>(inscriptions.getEquipe()),
 				(element) -> editerEquipe(element)
 				);
 	}
@@ -332,7 +332,7 @@ public class DialogueUtilisateur
 	private List<Personne> ajouterMembre(final Equipe equipe)
 	{
 		return new List<>("Ajouter un membre", "m", 
-				() -> new ArrayList<>(inscriptions.getPersonnes()),
+				() -> new ArrayList<>(inscriptions.getPersonne()),
 				(index, element) -> {equipe.add(element);}
 				);
 	}
@@ -340,7 +340,7 @@ public class DialogueUtilisateur
 	private List<Personne> supprimerMembre(final Equipe equipe)
 	{
 		return new List<>("Supprimer un membre", "s", 
-				() -> new ArrayList<>(inscriptions.getPersonnes()),
+				() -> new ArrayList<>(inscriptions.getPersonne()),
 				(index, element) -> {equipe.remove(element);}
 				);
 	}
@@ -366,7 +366,7 @@ public class DialogueUtilisateur
 	private Option afficherPersonne()
 	{
 		return new Option("Afficher les personnes", "a", () -> {
-			for (Personne personnes : inscriptions.getPersonnes())
+			for (Personne personnes : inscriptions.getPersonne())
 				System.out.println(personnes);});
 	}
 	
@@ -382,7 +382,7 @@ public class DialogueUtilisateur
 	private Option modifierPersonne()
 	{
 		return new List<>("Modifier", "m",
-				() -> inscriptions.getPersonnes(),
+				() -> inscriptions.getPersonne(),
 				(indice, element) -> 
 					{
 					inscriptions.sauvegarder(new Personne(InOut.getString("Prenom : "), 
@@ -394,7 +394,7 @@ public class DialogueUtilisateur
 	private Option supprimerPersonne()
 	{
 		return new List<>("Supprimer une personne", "s",
-				() -> inscriptions.getPersonnes(),
+				() -> inscriptions.getPersonne(),
 				(indice, element) -> 
 					{
 						inscriptions.supprimer(element);
@@ -405,7 +405,7 @@ public class DialogueUtilisateur
 	private List<Personne> selectionnerPersonne()
 	{
 		return new List<Personne>("Selectionner une personne", "c", 
-				() -> new ArrayList<>(inscriptions.getPersonnes()),
+				() -> new ArrayList<>(inscriptions.getPersonne()),
 				(element) -> editerPersonne(element)
 				);
 	}
@@ -450,7 +450,7 @@ public class DialogueUtilisateur
 	private List<Equipe> ajouterEquipe(final Personne personne)
 	{
 		return new List<>("Ajouter une equipe", "e", 
-				() -> new ArrayList<>(inscriptions.getEquipes()),
+				() -> new ArrayList<>(inscriptions.getEquipe()),
 				(index, element) -> {personne.add(element);}
 				);
 	}
@@ -458,7 +458,7 @@ public class DialogueUtilisateur
 	private List<Equipe> supprimerEquipe(final Personne personne)
 	{
 		return new List<>("Supprimer une equipe", "s", 
-				() -> new ArrayList<>(inscriptions.getEquipes()),
+				() -> new ArrayList<>(inscriptions.getEquipe()),
 				(index, element) -> {personne.remove(element);}
 				);
 	}

@@ -22,11 +22,6 @@ public class Personne extends Candidat
 	private static final long serialVersionUID = 4434646724271327254L;
 	private String prenom, mail;
 	private Set<Equipe> equipes;
-	
-		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		@Column(name = "numCandidat")
-		private int numCandidat;
 
 		@Column(name = "nomPersonne")
 		private String nomPersonne;

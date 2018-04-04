@@ -6,22 +6,22 @@ public class GestionBase
 {
 	private static GestionBase inscriptions = null;
 	
-	public List<Personne> getPersonnes()
+	public List<Personne> getPersonne()
 	{
 		return BDDInscriptionSportives.refreshListPersonnes();
 	}
 	
-	public List<Equipe> getEquipes()
+	public List<Equipe> getEquipe()
 	{
 		return BDDInscriptionSportives.refreshListEquipes();
 	}
 	
-	public List<Competition> getCompetitions()
+	public List<Competition> getCompetition()
 	{
 		return BDDInscriptionSportives.refreshListCompetitions();
 	}
 	
-	public List<Candidat> getCandidats()
+	public List<Candidat> getCandidat()
 	{
 		return BDDInscriptionSportives.refreshListCandidats();
 	}

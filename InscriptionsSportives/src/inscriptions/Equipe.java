@@ -23,11 +23,6 @@ public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;
 	private SortedSet<Personne> membres = new TreeSet<>();
-	
-		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		@Column(name = "numCandidat")
-		private int numCandidat;
 
 		@Column(name = "nomEquipes")
 		private String nomEquipes;
