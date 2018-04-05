@@ -7,11 +7,13 @@ import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -27,6 +29,7 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 	private static final long serialVersionUID = -6035399822298694746L;
 	private Inscriptions inscriptions;
 	private String nom;
+	@OneToMany(targetEntity=Candidat.class, mappedBy="competitions", fetch=FetchType.EAGER)
 	private Set<Competition> competitions;
 	
 	@Id
@@ -36,6 +39,10 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 
 	@Column(name = "nomCandidat")
 	private String nomCandidat;
+	
+	@Column(name = "competitions")
+	@OneToMany(targetEntity=Candidat.class, mappedBy="competitions", fetch=FetchType.EAGER)
+	private Set<Competition> competitionsCandidat;
 	
 	Candidat(Inscriptions inscriptions, String nom)
 	{

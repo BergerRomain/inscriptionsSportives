@@ -6,9 +6,8 @@ import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -22,14 +21,19 @@ import javax.persistence.Table;
 public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;
+	@OneToMany(targetEntity=Equipe.class, mappedBy="membres", fetch=FetchType.EAGER)
+	@javax.persistence.OrderBy("sort")
 	private SortedSet<Personne> membres = new TreeSet<>();
-
-		@Column(name = "nomEquipes")
-		private String nomEquipes;
+	
+	@Column(name = "membres")
+	@OneToMany(targetEntity=Equipe.class, mappedBy="membres", fetch=FetchType.EAGER)
+	@javax.persistence.OrderBy("sort")
+	private SortedSet<Personne> membresEquipe;
 	
 	Equipe(Inscriptions inscriptions, String nom)
 	{
 		super(inscriptions, nom);
+		membresEquipe = new TreeSet<>();
 	}
 	
 	public Equipe(String nomEquipes)

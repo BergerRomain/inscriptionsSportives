@@ -6,9 +6,8 @@ import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -21,16 +20,18 @@ public class Personne extends Candidat
 {
 	private static final long serialVersionUID = 4434646724271327254L;
 	private String prenom, mail;
+	@OneToMany(targetEntity=Personne.class, mappedBy="equipes", fetch=FetchType.EAGER)
 	private Set<Equipe> equipes;
-
-		@Column(name = "nomPersonne")
-		private String nomPersonne;
 
 		@Column(name = "prenomPersonne")
 		private String prenomPersonne;
 		
 		@Column(name = "mailPersonne")
 		private String mailPersonne;
+		
+		@Column(name = "equipesPersonne")
+		@OneToMany(targetEntity=Personne.class, mappedBy="equipes", fetch=FetchType.EAGER)
+		private Set<Equipe> equipesPersonne;
 
 	
 	Personne(Inscriptions inscriptions, String nom, String prenom, String mail)

@@ -8,9 +8,11 @@ import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -26,6 +28,7 @@ public class Competition implements Comparable<Competition>, Serializable
 	private static final long serialVersionUID = -2882150118573759729L;
 	private Inscriptions inscriptions;
 	private String nom;
+	@OneToMany(targetEntity=Competition.class, mappedBy="candidats", fetch=FetchType.EAGER)
 	private Set<Candidat> candidats;
 	private LocalDate dateCloture;
 	private boolean enEquipe = false;
@@ -39,11 +42,15 @@ public class Competition implements Comparable<Competition>, Serializable
 		@Column(name = "nomCompetition")
 		private String nomCompetition;
 
-		@Column(name = "dateCloture")
+		@Column(name="dateCDeCloture", insertable=false, updatable=false)
 		private LocalDate dateDeCloture;
 		
-		@Column(name = "enEquipe")
+		@Column(name = "enEquipe", insertable=false, updatable=false)
 		private boolean enEquipes;
+		
+		@Column(name = "candidats")
+		@OneToMany(targetEntity=Competition.class, mappedBy="candidats", fetch=FetchType.EAGER)
+		private Set<Candidat> candidatsCompetition;
 	
 	Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
 	{
