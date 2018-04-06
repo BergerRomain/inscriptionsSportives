@@ -118,7 +118,7 @@ public class DialogueUtilisateur
 	private Option ajouterCompetition()
 	{
 		return new Option("Ajouter une competition", "j", () -> { 			
-			inscriptions.sauvegarder(new Competition(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
+			inscriptions.sauvegarder(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
 	}
 	
 	private Option modifierCompetition()
@@ -127,7 +127,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarder(new Competition(InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
+					inscriptions.sauvegarder(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
 				}
 			);
 	}
@@ -261,7 +261,7 @@ public class DialogueUtilisateur
 	private Option ajouterEquipe()
 	{
 		return new Option("Ajouter une equipe", "j", () -> { 			
-			inscriptions.sauvegarder(new Equipe(InOut.getString("Nom : ")));});
+			inscriptions.sauvegarder(new Equipe(null, InOut.getString("Nom : ")));});
 	}
 	
 	private Option modifierEquipe()
@@ -270,7 +270,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getEquipe(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarder(new Equipe(InOut.getString("Nom : ")));
+					inscriptions.sauvegarder(new Equipe(null, InOut.getString("Nom : ")));
 				}
 			);
 	}
@@ -374,7 +374,7 @@ public class DialogueUtilisateur
 	{
 		return new Option("Ajouter une personne", "j", () -> 
 		{
-			inscriptions.sauvegarder(new Personne(InOut.getString("Nom : "), 
+			inscriptions.sauvegarder(new Personne(null, InOut.getString("Nom : "), 
 					InOut.getString("Prenom : "), InOut.getString("Mail : ")));
 		});
 	}
@@ -385,7 +385,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getPersonne(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarder(new Personne(InOut.getString("Prenom : "), 
+					inscriptions.sauvegarder(new Personne(null, InOut.getString("Prenom : "), 
 							InOut.getString("Nom : "), InOut.getString("Mail : ")));
 				}
 			);

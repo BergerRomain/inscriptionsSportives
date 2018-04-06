@@ -6,9 +6,12 @@ import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.SortNatural;
 
 /**
  * Représente une Equipe. C'est-à-dire un ensemble de personnes pouvant 
@@ -21,24 +24,17 @@ import javax.persistence.Table;
 public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;
-	@OneToMany(targetEntity=Equipe.class, mappedBy="membres", fetch=FetchType.EAGER)
-	@javax.persistence.OrderBy("sort")
+	@Column(name = "membres")
+	@ManyToMany
+	@Cascade(value = { CascadeType.ALL })
+	@SortNatural
+	@javax.persistence.OrderBy("nom")
 	private SortedSet<Personne> membres = new TreeSet<>();
 	
-	@Column(name = "membres")
-	@OneToMany(targetEntity=Equipe.class, mappedBy="membres", fetch=FetchType.EAGER)
-	@javax.persistence.OrderBy("sort")
-	private SortedSet<Personne> membresEquipe;
-	
-	Equipe(Inscriptions inscriptions, String nom)
+	public Equipe(Inscriptions inscriptions, String nom)
 	{
 		super(inscriptions, nom);
-		membresEquipe = new TreeSet<>();
-	}
-	
-	public Equipe(String nomEquipes)
-	{
-		super(nomEquipes);
+		membres = new TreeSet<>();
 	}
 
 	/**

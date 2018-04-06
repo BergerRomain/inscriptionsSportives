@@ -10,6 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.SortNatural;
+
 /**
  * Représente une personne physique pouvant s'inscrire à une compétition.
  */
@@ -19,34 +23,22 @@ import javax.persistence.Table;
 public class Personne extends Candidat
 {
 	private static final long serialVersionUID = 4434646724271327254L;
-	private String prenom, mail;
+	@Column(name = "prenomPersonne")
+	private String prenom;
+	@Column(name = "mailPersonne")
+	private String mail;
+	@Column(name = "equipesPersonne")
 	@OneToMany(targetEntity=Personne.class, mappedBy="equipes", fetch=FetchType.EAGER)
+	@Cascade(value = { CascadeType.ALL })
+	@SortNatural
 	private Set<Equipe> equipes;
 
-		@Column(name = "prenomPersonne")
-		private String prenomPersonne;
-		
-		@Column(name = "mailPersonne")
-		private String mailPersonne;
-		
-		@Column(name = "equipesPersonne")
-		@OneToMany(targetEntity=Personne.class, mappedBy="equipes", fetch=FetchType.EAGER)
-		private Set<Equipe> equipesPersonne;
-
-	
-	Personne(Inscriptions inscriptions, String nom, String prenom, String mail)
+	public Personne(Inscriptions inscriptions, String nom, String prenom, String mail)
 	{
 		super(inscriptions, nom);
 		this.prenom = prenom;
 		this.mail = mail;
 		equipes = new TreeSet<>();
-	}
-	
-	public Personne(String nomPersonnes, String prenomPersonnes, String mailPersonnes)
-	{
-		super(nomPersonnes);
-		this.prenomPersonne = prenomPersonnes;
-		this.mailPersonne = mailPersonnes;
 	}
 
 	/**

@@ -16,6 +16,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.SortNatural;
+
 /**
  * Candidat à un événement sportif, soit une personne physique, soit une équipe.
  *
@@ -28,32 +32,28 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 {
 	private static final long serialVersionUID = -6035399822298694746L;
 	private Inscriptions inscriptions;
-	private String nom;
-	@OneToMany(targetEntity=Candidat.class, mappedBy="competitions", fetch=FetchType.EAGER)
-	private Set<Competition> competitions;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "numCandidat")
 	private int numCandidat;
-
 	@Column(name = "nomCandidat")
-	private String nomCandidat;
-	
+	private String nom;
 	@Column(name = "competitions")
 	@OneToMany(targetEntity=Candidat.class, mappedBy="competitions", fetch=FetchType.EAGER)
-	private Set<Competition> competitionsCandidat;
+	@Cascade(value = { CascadeType.ALL })
+	@SortNatural
+	private Set<Competition> competitions;
+	
+	@SuppressWarnings("unused")
+	private Candidat()
+	{
+	}
 	
 	Candidat(Inscriptions inscriptions, String nom)
 	{
 		this.inscriptions = inscriptions;	
 		this.nom = nom;
 		competitions = new TreeSet<>();
-	}
-	
-	public Candidat(String nomCandidat)
-	{
-		this.nomCandidat = nomCandidat;
 	}
 
 	/**

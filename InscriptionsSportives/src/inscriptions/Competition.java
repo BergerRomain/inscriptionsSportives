@@ -15,6 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.SortNatural;
+
 /**
  * Représente une compétition, c'est-à-dire un ensemble de candidats 
  * inscrits à un événement, les inscriptions sont closes à la date dateCloture.
@@ -27,32 +31,29 @@ public class Competition implements Comparable<Competition>, Serializable
 {
 	private static final long serialVersionUID = -2882150118573759729L;
 	private Inscriptions inscriptions;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "numCompetition")
+	private int numCompetition;
+	@Column(name = "nomCompetition")
 	private String nom;
+	@Column(name = "candidats")
 	@OneToMany(targetEntity=Competition.class, mappedBy="candidats", fetch=FetchType.EAGER)
+	@Cascade(value = { CascadeType.ALL })
+	@SortNatural
 	private Set<Candidat> candidats;
+	@Column(name="dateDeCloture", insertable=false, updatable=false)
 	private LocalDate dateCloture;
+	@Column(name = "enEquipe", insertable=false, updatable=false)
 	private boolean enEquipe = false;
 	private LocalDate dateSysteme = LocalDate.now();
-
-		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		@Column(name = "numCompetition")
-		private int numCompetition;
-
-		@Column(name = "nomCompetition")
-		private String nomCompetition;
-
-		@Column(name="dateCDeCloture", insertable=false, updatable=false)
-		private LocalDate dateDeCloture;
-		
-		@Column(name = "enEquipe", insertable=false, updatable=false)
-		private boolean enEquipes;
-		
-		@Column(name = "candidats")
-		@OneToMany(targetEntity=Competition.class, mappedBy="candidats", fetch=FetchType.EAGER)
-		private Set<Candidat> candidatsCompetition;
 	
-	Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
+	@SuppressWarnings("unused")
+	private Competition()
+	{
+	}
+	
+	public Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
 	{
 		this.enEquipe = enEquipe;
 		this.inscriptions = inscriptions;
@@ -60,14 +61,7 @@ public class Competition implements Comparable<Competition>, Serializable
 		this.dateCloture = dateCloture;
 		candidats = new TreeSet<>();
 	}
-	
-	public Competition(String nomCompetition, LocalDate dateCloture, boolean enEquipe)
-	{
-		this.nomCompetition = nomCompetition;
-		this.dateCloture = dateCloture;
-		this.enEquipe = enEquipe;
-	}
-	
+
 	/**
 	 * Retourne le nom de la compétition.
 	 * @return
