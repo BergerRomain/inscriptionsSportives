@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -30,6 +31,7 @@ import org.hibernate.annotations.SortNatural;
 public class Competition implements Comparable<Competition>, Serializable
 {
 	private static final long serialVersionUID = -2882150118573759729L;
+	@Transient
 	private Inscriptions inscriptions;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,10 +44,11 @@ public class Competition implements Comparable<Competition>, Serializable
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
 	private Set<Candidat> candidats;
-	@Column(name="dateDeCloture", insertable=false, updatable=false)
+	@Column(name="dateDeCloture", columnDefinition="timestamp", insertable=false, updatable=false)
 	private LocalDate dateCloture;
-	@Column(name = "enEquipe", insertable=false, updatable=false)
+	@Column(name = "enEquipe", columnDefinition="boolean default false", insertable=false, updatable=false)
 	private boolean enEquipe = false;
+	@Transient
 	private LocalDate dateSysteme = LocalDate.now();
 	
 	@SuppressWarnings("unused")

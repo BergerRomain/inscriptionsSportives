@@ -15,6 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -31,6 +32,7 @@ import org.hibernate.annotations.SortNatural;
 public abstract class Candidat implements Comparable<Candidat>, Serializable
 {
 	private static final long serialVersionUID = -6035399822298694746L;
+	@Transient
 	private Inscriptions inscriptions;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
