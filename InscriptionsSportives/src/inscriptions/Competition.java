@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -44,9 +45,10 @@ public class Competition implements Comparable<Competition>, Serializable
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
 	private Set<Candidat> candidats;
-	@Column(name="dateDeCloture", columnDefinition="timestamp", insertable=false, updatable=false)
+	@Column(name="dateDeCloture", columnDefinition="date")
+	@Convert(converter = LocalDateConvertion.class)
 	private LocalDate dateCloture;
-	@Column(name = "enEquipe", columnDefinition="boolean default false", insertable=false, updatable=false)
+	@Column(name = "enEquipe", columnDefinition="boolean")
 	private boolean enEquipe = false;
 	@Transient
 	private LocalDate dateSysteme = LocalDate.now();
