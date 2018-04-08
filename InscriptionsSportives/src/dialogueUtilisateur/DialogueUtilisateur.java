@@ -1,13 +1,9 @@
 package dialogueUtilisateur;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
 
 import commandLineMenus.*;
 import commandLineMenus.rendering.examples.util.InOut;
@@ -15,22 +11,13 @@ import inscriptions.*;
 
 import static commandLineMenus.rendering.examples.util.InOut.*;
 
-public class DialogueUtilisateur extends JFrame
+public class DialogueUtilisateur
 {
 	private static final Exception IOException = null;
 	private GestionBase inscriptions;
 	
 	public DialogueUtilisateur(GestionBase inscriptions)
 	{
-		this.setTitle("Inscriptions Sportives");
-		this.setSize(550,600);
-	    this.setLocationRelativeTo(null);
-	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
-
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation(dim.width/2 - this.getWidth()/2, dim.height/2 - this.getHeight()/2);
-
-		this.setVisible(true);
 		this.inscriptions = inscriptions;
 		inscriptionMenu().start();
 	}
