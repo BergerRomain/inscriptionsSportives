@@ -1,5 +1,8 @@
 package inscriptions;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 public class GestionBase
@@ -33,34 +36,59 @@ public class GestionBase
 		return inscriptions;
 	}
 	
-	public void sauvegarder(Personne personne)
+	public void sauvegarde(Personne personne)
 	{
 		BDDInscriptionSportives.save(personne);
 	}
 
-	public void supprimer(Personne personne)
+	public void supprime(Personne personne)
 	{
 		BDDInscriptionSportives.delete(personne);
 	}
 	
-	public void sauvegarder(Competition competition)
+	public void sauvegarde(Competition competition)
 	{
 		BDDInscriptionSportives.save(competition);
 	}
 
-	public void supprimer(Competition competition)
+	public void supprime(Competition competition)
 	{
 		BDDInscriptionSportives.delete(competition);
 	}
 	
-	public void sauvegarder(Equipe equipe)
+	public void sauvegarde(Equipe equipe)
 	{
 		BDDInscriptionSportives.save(equipe);
 	}
 
-	public void supprimer(Equipe equipe)
+	public void supprime(Equipe equipe)
 	{
 		BDDInscriptionSportives.delete(equipe);
+	}
+	
+	public void sauvegarder() throws IOException
+	{
+		final String FILE_NAME = "Inscriptions.srz";
+		ObjectOutputStream oos = null;
+		try
+		{
+			FileOutputStream fis = new FileOutputStream(FILE_NAME);
+			oos = new ObjectOutputStream(fis);
+			oos.writeObject(this);
+		}
+		catch (IOException e)
+		{
+			throw e;
+		}
+		finally
+		{
+			try
+			{
+				if (oos != null)
+					oos.close();
+			} 
+			catch (IOException e){}
+		}
 	}
 }
 

@@ -1,9 +1,13 @@
 package dialogueUtilisateur;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
 
 import commandLineMenus.*;
 import commandLineMenus.rendering.examples.util.InOut;
@@ -11,13 +15,22 @@ import inscriptions.*;
 
 import static commandLineMenus.rendering.examples.util.InOut.*;
 
-public class DialogueUtilisateur 
+public class DialogueUtilisateur extends JFrame
 {
 	private static final Exception IOException = null;
 	private GestionBase inscriptions;
 	
 	public DialogueUtilisateur(GestionBase inscriptions)
 	{
+		this.setTitle("Inscriptions Sportives");
+		this.setSize(550,600);
+	    this.setLocationRelativeTo(null);
+	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2 - this.getWidth()/2, dim.height/2 - this.getHeight()/2);
+
+		this.setVisible(true);
 		this.inscriptions = inscriptions;
 		inscriptionMenu().start();
 	}
@@ -32,7 +45,7 @@ public class DialogueUtilisateur
 	
 	private Option quitter()
 	{
-		return new Option("Quitter", "q", Action.QUIT);
+		return new Option("Quitter", "u", Action.QUIT);
 	}
 	
 	private Menu Inscription()
@@ -118,7 +131,7 @@ public class DialogueUtilisateur
 	private Option ajouterCompetition()
 	{
 		return new Option("Ajouter une competition", "j", () -> { 			
-			inscriptions.sauvegarder(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
+			inscriptions.sauvegarde(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
 	}
 	
 	private Option modifierCompetition()
@@ -127,7 +140,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarder(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
+					inscriptions.sauvegarde(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
 				}
 			);
 	}
@@ -138,7 +151,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
 					{
-						inscriptions.supprimer(element);
+						inscriptions.supprime(element);
 					}
 				);
 	}
@@ -261,7 +274,7 @@ public class DialogueUtilisateur
 	private Option ajouterEquipe()
 	{
 		return new Option("Ajouter une equipe", "j", () -> { 			
-			inscriptions.sauvegarder(new Equipe(null, InOut.getString("Nom : ")));});
+			inscriptions.sauvegarde(new Equipe(null, InOut.getString("Nom : ")));});
 	}
 	
 	private Option modifierEquipe()
@@ -270,7 +283,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getEquipe(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarder(new Equipe(null, InOut.getString("Nom : ")));
+					inscriptions.sauvegarde(new Equipe(null, InOut.getString("Nom : ")));
 				}
 			);
 	}
@@ -281,7 +294,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getEquipe(),
 				(indice, element) -> 
 					{
-						inscriptions.supprimer(element);
+						inscriptions.supprime(element);
 					}
 				);
 	}
@@ -374,7 +387,7 @@ public class DialogueUtilisateur
 	{
 		return new Option("Ajouter une personne", "j", () -> 
 		{
-			inscriptions.sauvegarder(new Personne(null, InOut.getString("Nom : "), 
+			inscriptions.sauvegarde(new Personne(null, InOut.getString("Nom : "), 
 					InOut.getString("Prenom : "), InOut.getString("Mail : ")));
 		});
 	}
@@ -385,7 +398,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getPersonne(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarder(new Personne(null, InOut.getString("Prenom : "), 
+					inscriptions.sauvegarde(new Personne(null, InOut.getString("Prenom : "), 
 							InOut.getString("Nom : "), InOut.getString("Mail : ")));
 				}
 			);
@@ -397,7 +410,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getPersonne(),
 				(indice, element) -> 
 					{
-						inscriptions.supprimer(element);
+						inscriptions.supprime(element);
 					}
 				);
 	}

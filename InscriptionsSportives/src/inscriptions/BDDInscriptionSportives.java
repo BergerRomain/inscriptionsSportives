@@ -103,5 +103,12 @@ abstract class BDDInscriptionSportives
 		Query query = session.createQuery("from Candidat");
 		return query.list();
 	}
+	
+	static void delete(Candidat candidat)
+	{
+		Transaction tx = session.beginTransaction();
+		session.delete(candidat);
+		tx.commit();
+	}
 }
 

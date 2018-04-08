@@ -55,6 +55,8 @@ public class Equipe extends Candidat
 	public boolean add(Personne membre)
 	{
 		membre.add(this);
+		membres.add(membre);
+		BDDInscriptionSportives.save(membre);
 		return membres.add(membre);
 	}
 
@@ -67,6 +69,8 @@ public class Equipe extends Candidat
 	public boolean remove(Personne membre)
 	{
 		membre.remove(this);
+		membres.remove(membre);
+		BDDInscriptionSportives.delete(membre);
 		return membres.remove(membre);
 	}
 

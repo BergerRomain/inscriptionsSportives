@@ -9,11 +9,10 @@ import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -41,7 +40,7 @@ public class Competition implements Comparable<Competition>, Serializable
 	@Column(name = "nomCompetition")
 	private String nom;
 	@Column(name = "candidats")
-	@OneToMany(targetEntity=Competition.class, mappedBy="candidats", fetch=FetchType.EAGER)
+	@ManyToMany
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
 	private Set<Candidat> candidats;
@@ -164,6 +163,8 @@ public class Competition implements Comparable<Competition>, Serializable
 			if (enEquipe)
 				throw new RuntimeException();
 			personne.add(this);
+			candidats.add(personne);
+			BDDInscriptionSportives.save(personne);
 			return candidats.add(personne);
 	}
 
@@ -182,6 +183,8 @@ public class Competition implements Comparable<Competition>, Serializable
 			if (!enEquipe)
 				throw new RuntimeException();
 			equipe.add(this);
+			candidats.add(equipe);
+			BDDInscriptionSportives.save(equipe);
 			return candidats.add(equipe);
 	}
 
@@ -194,6 +197,8 @@ public class Competition implements Comparable<Competition>, Serializable
 	public boolean remove(Candidat candidat)
 	{
 		candidat.remove(this);
+		candidats.remove(candidat);
+		BDDInscriptionSportives.delete(candidat);
 		return candidats.remove(candidat);
 	}
 	
