@@ -1,13 +1,14 @@
 package inscriptions;
 
 import java.util.Collections;
+
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
@@ -27,8 +28,8 @@ public class Personne extends Candidat
 	private String prenom;
 	@Column(name = "mailPersonne")
 	private String mail;
-	@Column(name = "equipesPersonne")
-	@OneToMany(targetEntity=Personne.class, mappedBy="equipes", fetch=FetchType.EAGER)
+	//@Column(name = "equipesPersonne")
+	@ManyToMany(targetEntity=Equipe.class, mappedBy="membres", fetch=FetchType.EAGER)
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
 	private Set<Equipe> equipes;

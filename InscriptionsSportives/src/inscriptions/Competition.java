@@ -39,7 +39,7 @@ public class Competition implements Comparable<Competition>, Serializable
 	private int numCompetition;
 	@Column(name = "nomCompetition")
 	private String nom;
-	@Column(name = "candidats")
+	//@Column(name = "candidats")
 	@ManyToMany
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural

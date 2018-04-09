@@ -13,7 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -40,8 +40,8 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 	private int numCandidat;
 	@Column(name = "nomCandidat")
 	private String nom;
-	@Column(name = "competitions")
-	@OneToMany(targetEntity=Candidat.class, mappedBy="competitions", fetch=FetchType.EAGER)
+	//@Column(name = "competitions")
+	@ManyToMany(targetEntity=Competition.class, mappedBy="candidats", fetch=FetchType.EAGER)
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
 	private Set<Competition> competitions;

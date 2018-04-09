@@ -123,7 +123,7 @@ public class DialogueUtilisateur
 	
 	private Option modifierCompetition()
 	{
-		return new List<>("Modifier", "m",
+		return new List<>("Modifier une competition", "m",
 				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
 					{

@@ -24,7 +24,7 @@ import org.hibernate.annotations.SortNatural;
 public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;
-	@Column(name = "membres")
+	//@Column
 	@ManyToMany
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
