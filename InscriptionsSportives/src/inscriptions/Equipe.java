@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -24,16 +23,21 @@ import org.hibernate.annotations.SortNatural;
 public class Equipe extends Candidat
 {
 	private static final long serialVersionUID = 4147819927233466035L;
-	//@Column
 	@ManyToMany
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
 	@javax.persistence.OrderBy("nom")
 	private SortedSet<Personne> membres = new TreeSet<>();
 	
-	public Equipe(Inscriptions inscriptions, String nom)
+	Equipe(Inscriptions inscriptions, String nom)
 	{
 		super(inscriptions, nom);
+		membres = new TreeSet<>();
+	}
+	
+	public Equipe(String nom)
+	{
+		super(nom);
 		membres = new TreeSet<>();
 	}
 
@@ -55,8 +59,6 @@ public class Equipe extends Candidat
 	public boolean add(Personne membre)
 	{
 		membre.add(this);
-		membres.add(membre);
-		BDDInscriptionSportives.save(membre);
 		return membres.add(membre);
 	}
 
@@ -69,8 +71,6 @@ public class Equipe extends Candidat
 	public boolean remove(Personne membre)
 	{
 		membre.remove(this);
-		membres.remove(membre);
-		BDDInscriptionSportives.delete(membre);
 		return membres.remove(membre);
 	}
 

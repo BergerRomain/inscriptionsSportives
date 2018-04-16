@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import commandLineMenus.*;
-import commandLineMenus.rendering.examples.util.InOut;
+import hibernate.GestionBase;
 import inscriptions.*;
 
 import static commandLineMenus.rendering.examples.util.InOut.*;
@@ -32,7 +32,7 @@ public class DialogueUtilisateur
 	
 	private Option quitter()
 	{
-		return new Option("Quitter", "u", Action.QUIT);
+		return new Option("Quitter", "q", Action.QUIT);
 	}
 	
 	private Menu Inscription()
@@ -40,7 +40,7 @@ public class DialogueUtilisateur
 		Menu Inscription = new Menu("Inscription", "i");
 		Inscription.add(menuCompetition());
 		Inscription.add(candidat());
-		Inscription.addBack("q");
+		Inscription.addBack("Retour", "r");
 		return Inscription;
 	}
 	
@@ -52,7 +52,7 @@ public class DialogueUtilisateur
 		menuCompetition.add(modifierCompetition());
 		menuCompetition.add(supprimerCompetition());
 		menuCompetition.add(selectionnerCompetition());
-		menuCompetition.addBack("q");
+		menuCompetition.addBack("Retour", "r");
 		return menuCompetition;
 	}
 	
@@ -110,15 +110,13 @@ public class DialogueUtilisateur
 	
 	private Option afficherCompetition()
 	{
-		return new Option("Afficher les competitions", "a", () -> {
-			for (Competition competition : inscriptions.getCompetition())
-				System.out.println(competition);});
+		return new Option("Afficher les competitions", "a", () -> {System.out.println(inscriptions.getCompetition());});
 	}
 	
 	private Option ajouterCompetition()
 	{
 		return new Option("Ajouter une competition", "j", () -> { 			
-			inscriptions.sauvegarde(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
+			inscriptions.sauvegarde(new Competition(getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));});
 	}
 	
 	private Option modifierCompetition()
@@ -126,8 +124,8 @@ public class DialogueUtilisateur
 		return new List<>("Modifier une competition", "m",
 				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
-					{
-					inscriptions.sauvegarde(new Competition(null, InOut.getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
+				{
+					inscriptions.sauvegarde(new Competition(getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
 				}
 			);
 	}
@@ -156,7 +154,7 @@ public class DialogueUtilisateur
 		Menu menu = new Menu("Editer " + competition.getNom());
 		menu.add(afficher(competition));
 		menu.add(modifierCandidat(competition));
-		menu.addBack("q");
+		menu.addBack("Retour", "r");
 		return menu;
 	}
 	
@@ -174,17 +172,17 @@ public class DialogueUtilisateur
 	
 	private Menu modifierCandidat(Competition competition)
 	{
-		Menu menu = new Menu("Modifier le candidat", "o");
+		Menu menu = new Menu("Modifier les candidats", "m");
 		menu.add(afficherCandidat(competition));
 		menu.add(ajouterCandidat(competition));
 		menu.add(supprimerCandidat(competition));
-		menu.addBack("q");
+		menu.addBack("Retour", "r");
 		return menu;
 	}
 	
 	private Option afficherCandidat(Competition competition)
 	{
-		return new Option("Afficher les candidats", "c", () -> {System.out.println(competition.getCandidats());});
+		return new Option("Afficher les candidats", "a", () -> {System.out.println(competition.getCandidats());});
 	}
 	
 	private Option ajouterCandidat(final Competition competition)
@@ -201,7 +199,7 @@ public class DialogueUtilisateur
 	
 	private List<Equipe> ajouterEquipe(final Competition competition)
 	{
-		return new List<>("Ajouter une equipe", "e", 
+		return new List<>("Ajouter une equipe", "j", 
 				() -> new ArrayList<>(inscriptions.getEquipe()),
 				(index, element) -> {competition.add(element);}
 				);
@@ -209,7 +207,7 @@ public class DialogueUtilisateur
 	
 	private List<Personne> ajouterPersonne(final Competition competition)
 	{
-		return new List<>("Ajouter une personne", "e", 
+		return new List<>("Ajouter une personne", "j", 
 				() -> new ArrayList<>(inscriptions.getPersonne()),
 				(index, element) -> {competition.add(element);}
 				);
@@ -217,8 +215,8 @@ public class DialogueUtilisateur
 	
 	private Menu compareDate(Competition competition)
 	{
-		Menu compareDate = new Menu("On ne peut plus s'inscrire !", "e");
-		compareDate.addBack("q");
+		Menu compareDate = new Menu("On ne peut plus s'inscrire !", "j");
+		compareDate.addBack("Retour", "r");
 		return compareDate;
 	}
 	
@@ -235,7 +233,7 @@ public class DialogueUtilisateur
 		Menu candidat = new Menu("Gerer les candidats", "g");
 		candidat.add(menuEquipe());
 		candidat.add(menuPersonne());
-		candidat.addBack("q");
+		candidat.addBack("Retour", "r");
 		return candidat;
 	}
 	
@@ -247,21 +245,19 @@ public class DialogueUtilisateur
 		menuEquipe.add(modifierEquipe());
 		menuEquipe.add(supprimerEquipe());
 		menuEquipe.add(selectionnerEquipe());
-		menuEquipe.addBack("q");
+		menuEquipe.addBack("Retour", "r");
 		return menuEquipe;
 	}
 	
 	private Option afficherEquipe()
 	{
-		return new Option("Afficher les equipes", "a", () -> {
-			for (Equipe equipe : inscriptions.getEquipe())
-				System.out.println(equipe);});
+		return new Option("Afficher les equipes", "a", () -> {System.out.println(inscriptions.getEquipe());});
 	}
 	
 	private Option ajouterEquipe()
 	{
 		return new Option("Ajouter une equipe", "j", () -> { 			
-			inscriptions.sauvegarde(new Equipe(null, InOut.getString("Nom : ")));});
+			inscriptions.sauvegarde(new Equipe(getString("Nom : ")));});
 	}
 	
 	private Option modifierEquipe()
@@ -270,7 +266,7 @@ public class DialogueUtilisateur
 				() -> inscriptions.getEquipe(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarde(new Equipe(null, InOut.getString("Nom : ")));
+					inscriptions.sauvegarde(new Equipe(getString("Nom : ")));
 				}
 			);
 	}
@@ -300,7 +296,7 @@ public class DialogueUtilisateur
 		menu.add(afficher(equipe));
 		menu.add(modifierMembres(equipe));
 		menu.add(afficherCompetition(equipe));
-		menu.addBack("q");
+		menu.addBack("Retour", "r");
 		return menu;
 	}
 	
@@ -316,11 +312,11 @@ public class DialogueUtilisateur
 	
 	private Menu modifierMembres(Equipe equipe)
 	{
-		Menu menu = new Menu("Editer les membres", "e");
+		Menu menu = new Menu("Modifier les membres", "m");
 		menu.add(afficherMembre(equipe));
 		menu.add(ajouterMembre(equipe));
 		menu.add(supprimerMembre(equipe));
-		menu.addBack("q");
+		menu.addBack("Retour", "r");
 		return menu;
 	}
 	
@@ -331,7 +327,7 @@ public class DialogueUtilisateur
 	
 	private List<Personne> ajouterMembre(final Equipe equipe)
 	{
-		return new List<>("Ajouter un membre", "m", 
+		return new List<>("Ajouter un membre", "j", 
 				() -> new ArrayList<>(inscriptions.getPersonne()),
 				(index, element) -> {equipe.add(element);}
 				);
@@ -359,23 +355,21 @@ public class DialogueUtilisateur
 		menuPersonne.add(modifierPersonne());
 		menuPersonne.add(supprimerPersonne());
 		menuPersonne.add(selectionnerPersonne());
-		menuPersonne.addBack("q");	
+		menuPersonne.addBack("Retour", "r");	
 		return menuPersonne;
 	}
 	
 	private Option afficherPersonne()
 	{
-		return new Option("Afficher les personnes", "a", () -> {
-			for (Personne personnes : inscriptions.getPersonne())
-				System.out.println(personnes);});
+		return new Option("Afficher les personnes", "a", () -> {System.out.println(inscriptions.getPersonne());});
 	}
 	
 	private Option ajouterPersonne()
 	{
 		return new Option("Ajouter une personne", "j", () -> 
 		{
-			inscriptions.sauvegarde(new Personne(null, InOut.getString("Nom : "), 
-					InOut.getString("Prenom : "), InOut.getString("Mail : ")));
+			inscriptions.sauvegarde(new Personne(getString("Nom : "), 
+					getString("Prenom : "), getString("Mail : ")));
 		});
 	}
 	
@@ -385,8 +379,8 @@ public class DialogueUtilisateur
 				() -> inscriptions.getPersonne(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarde(new Personne(null, InOut.getString("Prenom : "), 
-							InOut.getString("Nom : "), InOut.getString("Mail : ")));
+					inscriptions.sauvegarde(new Personne(getString("Prenom : "), 
+							getString("Nom : "), getString("Mail : ")));
 				}
 			);
 	}
@@ -416,7 +410,7 @@ public class DialogueUtilisateur
 		menu.add(afficher(element));
 		menu.add(modifierEquipes(element));
 		menu.add(afficherCompetition(element));
-		menu.addBack("q");
+		menu.addBack("Retour", "r");
 		return menu;
 	}
 	
@@ -434,11 +428,11 @@ public class DialogueUtilisateur
 	
 	private Menu modifierEquipes(Personne personne)
 	{
-		Menu menu = new Menu("Modifier les equipes", "l");
+		Menu menu = new Menu("Modifier les equipes", "m");
 		menu.add(afficherEquipe(personne));
 		menu.add(ajouterEquipe(personne));
 		menu.add(supprimerEquipe(personne));
-		menu.addBack("q");
+		menu.addBack("Retour", "r");
 		return menu;
 	}
 	
@@ -449,7 +443,7 @@ public class DialogueUtilisateur
 	
 	private List<Equipe> ajouterEquipe(final Personne personne)
 	{
-		return new List<>("Ajouter une equipe", "e", 
+		return new List<>("Ajouter une equipe", "j", 
 				() -> new ArrayList<>(inscriptions.getEquipe()),
 				(index, element) -> {personne.add(element);}
 				);

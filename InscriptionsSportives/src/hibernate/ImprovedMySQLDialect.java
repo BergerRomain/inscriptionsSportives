@@ -1,4 +1,4 @@
-package inscriptions;
+package hibernate;
 
 import org.hibernate.dialect.MySQL5InnoDBDialect;
 

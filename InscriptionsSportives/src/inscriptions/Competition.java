@@ -20,6 +20,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.SortNatural;
 
+import hibernate.*;
+
 /**
  * Représente une compétition, c'est-à-dire un ensemble de candidats 
  * inscrits à un événement, les inscriptions sont closes à la date dateCloture.
@@ -39,7 +41,6 @@ public class Competition implements Comparable<Competition>, Serializable
 	private int numCompetition;
 	@Column(name = "nomCompetition")
 	private String nom;
-	//@Column(name = "candidats")
 	@ManyToMany
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
@@ -57,10 +58,18 @@ public class Competition implements Comparable<Competition>, Serializable
 	{
 	}
 	
-	public Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
+	Competition(Inscriptions inscriptions, String nom, LocalDate dateCloture, boolean enEquipe)
 	{
 		this.enEquipe = enEquipe;
 		this.inscriptions = inscriptions;
+		this.nom = nom;
+		this.dateCloture = dateCloture;
+		candidats = new TreeSet<>();
+	}
+	
+	public Competition(String nom, LocalDate dateCloture, boolean enEquipe)
+	{
+		this.enEquipe = enEquipe;
 		this.nom = nom;
 		this.dateCloture = dateCloture;
 		candidats = new TreeSet<>();
@@ -162,9 +171,7 @@ public class Competition implements Comparable<Competition>, Serializable
 		if(dateSysteme.isBefore(dateCloture))
 			if (enEquipe)
 				throw new RuntimeException();
-			personne.add(this);
-			candidats.add(personne);
-			BDDInscriptionSportives.save(personne);
+			personne.add(this);		
 			return candidats.add(personne);
 	}
 
@@ -183,8 +190,6 @@ public class Competition implements Comparable<Competition>, Serializable
 			if (!enEquipe)
 				throw new RuntimeException();
 			equipe.add(this);
-			candidats.add(equipe);
-			BDDInscriptionSportives.save(equipe);
 			return candidats.add(equipe);
 	}
 
@@ -197,8 +202,6 @@ public class Competition implements Comparable<Competition>, Serializable
 	public boolean remove(Candidat candidat)
 	{
 		candidat.remove(this);
-		candidats.remove(candidat);
-		BDDInscriptionSportives.delete(candidat);
 		return candidats.remove(candidat);
 	}
 	

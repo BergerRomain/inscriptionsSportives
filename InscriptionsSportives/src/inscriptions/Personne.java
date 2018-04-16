@@ -28,15 +28,22 @@ public class Personne extends Candidat
 	private String prenom;
 	@Column(name = "mailPersonne")
 	private String mail;
-	//@Column(name = "equipesPersonne")
 	@ManyToMany(targetEntity=Equipe.class, mappedBy="membres", fetch=FetchType.EAGER)
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
 	private Set<Equipe> equipes;
 
-	public Personne(Inscriptions inscriptions, String nom, String prenom, String mail)
+	Personne(Inscriptions inscriptions, String nom, String prenom, String mail)
 	{
 		super(inscriptions, nom);
+		this.prenom = prenom;
+		this.mail = mail;
+		equipes = new TreeSet<>();
+	}
+	
+	public Personne(String nom, String prenom, String mail)
+	{
+		super(nom);
 		this.prenom = prenom;
 		this.mail = mail;
 		equipes = new TreeSet<>();

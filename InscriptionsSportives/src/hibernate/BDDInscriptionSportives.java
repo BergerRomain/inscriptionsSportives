@@ -1,4 +1,4 @@
-package inscriptions;
+package hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -8,6 +8,11 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+
+import inscriptions.Candidat;
+import inscriptions.Competition;
+import inscriptions.Equipe;
+import inscriptions.Personne;
 
 abstract class BDDInscriptionSportives
 {
@@ -19,7 +24,7 @@ abstract class BDDInscriptionSportives
 		try
 		{
 			Configuration configuration = new Configuration()
-					.configure("inscriptions/BDDInscriptionSportives.cfg.xml");
+					.configure("hibernate/BDDInscriptionSportives.cfg.xml");
 			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties()).build();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);

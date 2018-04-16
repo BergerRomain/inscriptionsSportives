@@ -40,7 +40,6 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 	private int numCandidat;
 	@Column(name = "nomCandidat")
 	private String nom;
-	//@Column(name = "competitions")
 	@ManyToMany(targetEntity=Competition.class, mappedBy="candidats", fetch=FetchType.EAGER)
 	@Cascade(value = { CascadeType.ALL })
 	@SortNatural
@@ -51,9 +50,15 @@ public abstract class Candidat implements Comparable<Candidat>, Serializable
 	{
 	}
 	
-	public Candidat(Inscriptions inscriptions, String nom)
+	Candidat(Inscriptions inscriptions, String nom)
 	{
 		this.inscriptions = inscriptions;	
+		this.nom = nom;
+		competitions = new TreeSet<>();
+	}
+	
+	public Candidat(String nom)
+	{
 		this.nom = nom;
 		competitions = new TreeSet<>();
 	}

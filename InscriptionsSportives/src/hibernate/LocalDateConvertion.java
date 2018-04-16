@@ -1,4 +1,4 @@
-package inscriptions;
+package hibernate;
 
 import java.time.LocalDate;
 import java.util.Date;

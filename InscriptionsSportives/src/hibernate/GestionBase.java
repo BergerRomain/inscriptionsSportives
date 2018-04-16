@@ -1,9 +1,14 @@
-package inscriptions;
+package hibernate;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
+
+import inscriptions.Candidat;
+import inscriptions.Competition;
+import inscriptions.Equipe;
+import inscriptions.Personne;
 
 public class GestionBase
 {
