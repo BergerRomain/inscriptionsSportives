@@ -24,7 +24,7 @@ public class DialogueUtilisateur
 	
 	private Menu inscriptionMenu()
 	{
-		Menu inscriptionMenu = new Menu("Inscription sportive");
+		Menu inscriptionMenu = new Menu("Inscriptions sportives");
 		inscriptionMenu.add(Inscription());
 		inscriptionMenu.add(quitter());
 		return inscriptionMenu;
@@ -125,9 +125,10 @@ public class DialogueUtilisateur
 				() -> inscriptions.getCompetition(),
 				(indice, element) -> 
 				{
-					inscriptions.sauvegarde(new Competition(getString("Nom : "), getLocalDate("Date de cloture : "), (boolean)getBoolean("En équipes (oui/non) : ")));
-				}
-			);
+					element.setNom(getString("Nom : "));
+					element.setDateCloture(getLocalDate("Date de cloture : "));
+					inscriptions.sauvegarde(element);
+				});
 	}
 	
 	private Option supprimerCompetition()
@@ -143,7 +144,7 @@ public class DialogueUtilisateur
 	
 	private List<Competition> selectionnerCompetition()
 	{
-		return new List<Competition>("Selectionner une Competition", "c", 
+		return new List<Competition>("Selectionner une competition", "c", 
 				() -> new ArrayList<>(inscriptions.getCompetition()),
 				(element) -> editerCompetition(element)
 				);
@@ -265,8 +266,9 @@ public class DialogueUtilisateur
 		return new List<>("Modifier", "m",
 				() -> inscriptions.getEquipe(),
 				(indice, element) -> 
-					{
-					inscriptions.sauvegarde(new Equipe(getString("Nom : ")));
+				{
+					element.setNom(getString("Nom : "));
+					inscriptions.sauvegarde(element);
 				}
 			);
 	}
@@ -379,8 +381,10 @@ public class DialogueUtilisateur
 				() -> inscriptions.getPersonne(),
 				(indice, element) -> 
 					{
-					inscriptions.sauvegarde(new Personne(getString("Prenom : "), 
-							getString("Nom : "), getString("Mail : ")));
+						element.setNom(getString("Nom : "));
+						element.setPrenom(getString("Prenom : "));
+						element.setPrenom(getString("Mail : "));
+						inscriptions.sauvegarde(element);
 				}
 			);
 	}
