@@ -11,26 +11,25 @@ public class Fenetre extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel inscriptions = new JPanel();
-	private String[] OuiNon = {"oui", "non"};
-    private JComboBox combo = new JComboBox(OuiNon);
-	private JTable MenuCompetitions;
+	
+    Object[][] valeurCompetitions = {{"", "", "", ""}};
+	String titreCompetitions [] = {"Nom", "Date de Cloture", "En equipes ?", "Candidats"};
+	JTable MenuCompetitions = new JTable(new DefaultTableModel(valeurCompetitions, titreCompetitions));
 	  
 	Object[][] valeurPersonnes = {
-		      {"Moi", "lui", "vous"},
-		      {"Rohan","malhi","malecri"}
+		      {"Moi", "lui", "vous", "", ""},
+		      {"Rohan","malhi","malecri", "", ""}
 		    };
 
-	String titrePersonnes[] = {"Nom", "Prenom", "Mail"};
+	String titrePersonnes[] = {"Nom", "Prenom", "Mail", "Equipes", "Competitions"};
 	JTable MenuPersonnes = new JTable(valeurPersonnes, titrePersonnes);
 	
-	
-	    
     Object[][] valeurEquipes = {
-    	      {"Cysboy"},
-    	      {"Rohan"}
+    	      {"Cysboy", "", ""},
+    	      {"Rohan", "", ""}
     	    };
 
-    String titreEquipes[] = {"Nom"};
+    String titreEquipes[] = {"Nom", "Personnes", "Competitions"};
     JTable MenuEquipes = new JTable(valeurEquipes, titreEquipes);
 
     JButton Competitions = new JButton("Competitions");
@@ -63,13 +62,6 @@ public class Fenetre extends JFrame{
      
     public void changerMenuCompetitions(){
         this.getContentPane().removeAll();
-        Object[][] valeurCompetitions = {
-        	      {"Cysboy", "12-12-2019", OuiNon[0]},
-        	      {"Rohan", "12-02-2019", OuiNon[0]}
-        	    };
-      	String titreCompetitions [] = {"Nom", "Date de Cloture", "En equipes ?"};
-      	ZModel modelCompetitions = new ZModel(valeurCompetitions, titreCompetitions);
-      	this.MenuCompetitions = new JTable(modelCompetitions);
         this.AjouterCompetition.addActionListener(new EcouteurBoutonAjouterCompetitions());
     	this.Retour.addActionListener(new EcouteurBoutonRetour());
     	this.boutonsCompetition.add(AjouterCompetition);
@@ -77,7 +69,6 @@ public class Fenetre extends JFrame{
     	this.boutonsCompetition.add(Retour);
         this.getContentPane().add(new JScrollPane(MenuCompetitions), BorderLayout.CENTER);
         this.getContentPane().add(boutonsCompetition, BorderLayout.SOUTH);
-        this.MenuCompetitions.getColumn("En equipes ?").setCellEditor(new DefaultCellEditor(combo));
         this.repaint();
         this.revalidate();
     }
@@ -93,6 +84,7 @@ public class Fenetre extends JFrame{
     JLabel DateCloture = new JLabel("Date de cloture : ");
     JTextField SaisiDateCloture = new JTextField();
     JLabel EnEquipe = new JLabel("En equipe : ");
+    JTextField SaisiEnEquipe = new JTextField();
     
     JPanel boutonsAjouterCompetition = new JPanel();
     JButton ValiderCompetition = new JButton("Valider");
@@ -102,12 +94,13 @@ public class Fenetre extends JFrame{
         this.getContentPane().removeAll();
         SaisiNomCompetition.setPreferredSize(new Dimension(150, 20));
         SaisiDateCloture.setPreferredSize(new Dimension(150, 20));
+        SaisiEnEquipe.setPreferredSize(new Dimension(150, 20));
         this.boutonsAjouterCompetition.add(NomCompetition);
         this.boutonsAjouterCompetition.add(SaisiNomCompetition);
         this.boutonsAjouterCompetition.add(DateCloture);
         this.boutonsAjouterCompetition.add(SaisiDateCloture);
         this.boutonsAjouterCompetition.add(EnEquipe);
-        this.boutonsAjouterCompetition.add(combo);
+        this.boutonsAjouterCompetition.add(SaisiEnEquipe);
         this.ValiderCompetition.addActionListener(new EcouteurBoutonValiderAjouterCompetitions());
         this.RetourCompetition.addActionListener(new EcouteurBoutonChangerMenuCompetitions());
         this.boutonsAjouterCompetition.add(ValiderCompetition);
@@ -126,7 +119,12 @@ public class Fenetre extends JFrame{
     public class EcouteurBoutonValiderAjouterCompetitions implements ActionListener{
         public void actionPerformed(ActionEvent clic) {
         	Fenetre.this.changerMenuCompetitions();
-        	((ZModel)MenuCompetitions.getModel()).addRow(new Object[]{SaisiNomCompetition, SaisiDateCloture, combo});
+        	Object[] donnees = new Object[]{SaisiNomCompetition, SaisiDateCloture, SaisiEnEquipe, ""};
+        	SaisiNomCompetition.getText();
+        	SaisiDateCloture.getText();
+        	SaisiEnEquipe.getText();
+        	DefaultTableModel model = (DefaultTableModel) MenuCompetitions.getModel();
+        	model.addRow(donnees);
         }
     }
     
@@ -204,72 +202,4 @@ public class Fenetre extends JFrame{
     public static void main(String[] args){
         new Fenetre();
     }
-    
-    class ZModel extends AbstractTableModel{
-        private Object[][] data;
-        private String[] title;
-
-        //Constructeur
-        public ZModel(Object[][] data, String[] title){
-          this.data = data;
-          this.title = title;
-        }
-
-        //Retourne le titre de la colonne à l'indice spécifié
-        public String getColumnName(int col) {
-          return this.title[col];
-        }
-
-        //Retourne le nombre de colonnes
-        public int getColumnCount() {
-          return this.title.length;
-        }
-
-        //Retourne le nombre de lignes
-        public int getRowCount() {
-          return this.data.length;
-        }
-
-        //Retourne la valeur à l'emplacement spécifié
-        public Object getValueAt(int row, int col) {
-          return this.data[row][col];
-        }
-
-        //Définit la valeur à l'emplacement spécifié
-        public void setValueAt(Object value, int row, int col) {
-          //On interdit la modification sur certaines colonnes !
-          if(!this.getColumnName(col).equals("Age") && !this.getColumnName(col).equals("Suppression"))
-            this.data[row][col] = value;
-        }
-
-        //Retourne la classe de la donnée de la colonne
-        public Class getColumnClass(int col){
-          //On retourne le type de la cellule à la colonne demandée
-          //On se moque de la ligne puisque les types de données sont les mêmes quelle que soit la ligne
-          //On choisit donc la première ligne
-          return this.data[0][col].getClass();
-        }
-
-        public void addRow(Object[] data){
-            int indice = 0, nbRow = this.getRowCount(), nbCol = this.getColumnCount();
-             
-            Object temp[][] = this.data;
-            this.data = new Object[nbRow+1][nbCol];
-             
-            for(Object[] value : temp)
-               this.data[indice++] = value;
-             
-                
-            this.data[indice] = data;
-            temp = null;
-            //Cette méthode permet d'avertir le tableau que les données
-            //ont été modifiées, ce qui permet une mise à jour complète du tableau
-            this.fireTableDataChanged();
-         }
-        
-        public boolean isCellEditable(int row, int col){
-          return true;
-        }
-      }
-
 }
