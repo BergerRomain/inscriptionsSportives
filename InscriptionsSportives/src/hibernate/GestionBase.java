@@ -9,6 +9,7 @@ import inscriptions.Candidat;
 import inscriptions.Competition;
 import inscriptions.Equipe;
 import inscriptions.Personne;
+import ihm.Fenetre;
 
 public class GestionBase
 {

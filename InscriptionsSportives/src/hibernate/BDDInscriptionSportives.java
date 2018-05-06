@@ -13,8 +13,9 @@ import inscriptions.Candidat;
 import inscriptions.Competition;
 import inscriptions.Equipe;
 import inscriptions.Personne;
+import ihm.Fenetre;
 
-abstract class BDDInscriptionSportives
+public abstract class BDDInscriptionSportives
 {
 	private static Session session = null;
 
